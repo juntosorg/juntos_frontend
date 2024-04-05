@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import FormComponent from './FormComponent.vue'
+import ProgressBarComponent from '@/components/ProgressBarComponent.vue';
 const formData = [
   {
     question: 'Como você avaliaria sua qualidade de vida?',
@@ -25,17 +26,26 @@ const formData = [
 const totalItems = ref(formData.length)
 const currForm = ref(0)
 const updateCurrForm = () => {
-  currForm.value++
-}
+    currForm.value++;
+  }
+// Verifica se todos os formularios foram respondidos
+const isComplete = computed(() => currForm.value >= totalItems.value);
+
 </script>
 
 <template>
   <div class="container p-5 m-5">
-    <FormComponent
-      :question="formData[currForm].question"
-      :answers="formData[currForm].answers"
-      :on-next="updateCurrForm"
-    />
+    <ProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" />
+    <div v-if="!isComplete">
+      <FormComponent
+        :question="formData[currForm].question"
+        :answers="formData[currForm].answers"
+        :on-next="updateCurrForm"
+      />
+    </div>
+    <div v-else class="complete-message">
+      <center><h1>Formulario concluído!</h1></center>
+    </div>
   </div>
 </template>
 <style scoped></style>

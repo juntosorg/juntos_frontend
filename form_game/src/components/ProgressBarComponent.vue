@@ -8,43 +8,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    totalItems: {
-      type: Number,
-      required: true
-    }
+<script setup lang="ts">
+import { computed, defineProps } from 'vue'
+
+const props = defineProps({
+  totalItems: {
+    type: Number,
+    required: true,
   },
-  data() {
-    return {
-      answeredItems: 0,
-      progressPercent: 0
-    }
-  },
-  watch: {
-    answeredItems: function () {
-      this.updateProgress()
-    }
-  },
-  mounted() {
-    // teste
-    let progress = 0
-    const interval = setInterval(() => {
-      progress += Math.random() * 10
-      if (progress >= 100) {
-        progress = 100
-        clearInterval(interval)
-      }
-      this.progressPercent = progress
-    }, 1000)
-  },
-  methods: {
-    updateProgress() {
-      this.progressPercent = (this.answeredItems / this.totalItems) * 100
-    }
+  answeredItems: {
+    type: Number,
+    required: true,
   }
-}
+})
+
+const progressPercent = computed(() => {
+  return (props.answeredItems / props.totalItems) * 100;
+});
 </script>
 
 <style scoped>
