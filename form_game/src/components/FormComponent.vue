@@ -12,10 +12,13 @@ const selectAnswer = (index: number) => {
 </script>
 
 <template>
-  <div class="container-fluid bg-dark border m-5 p-5 rounded-3 text-left" style="margin: auto">
-    <h1 class="lead fw-bold mb-5 text-light">{{ question }}</h1>
+  <div
+    class="container-fluid bg-light border m-5 p-5 rounded-3 text-left shadow"
+    style="margin: auto"
+  >
+    <h1 class="lead fw-bold mb-5 text-dark">{{ question }}</h1>
     <div v-for="(answer, index) in answers" :key="index">
-      <label class="lead text-light">
+      <label class="lead text-dark">
         <input type="radio" :value="index" name="radio" @change="selectAnswer(index)" />
         {{ answer }}
       </label>
@@ -26,4 +29,8 @@ const selectAnswer = (index: number) => {
   </div>
 </template>
 
-<script></script>
+<style scoped>
+.shadow {
+  box-shadow: 2px 2px 2px black;
+}
+</style>

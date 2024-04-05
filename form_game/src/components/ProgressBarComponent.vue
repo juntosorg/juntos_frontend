@@ -20,31 +20,31 @@ export default {
     return {
       answeredItems: 0,
       progressPercent: 0
-    };
+    }
   },
   watch: {
-    answeredItems: function() {
-      this.updateProgress();
+    answeredItems: function () {
+      this.updateProgress()
     }
   },
   mounted() {
     // teste
-    let progress = 0;
+    let progress = 0
     const interval = setInterval(() => {
-      progress += Math.random() * 10;
+      progress += Math.random() * 10
       if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
+        progress = 100
+        clearInterval(interval)
       }
-      this.progressPercent = progress;
-    }, 1000);
+      this.progressPercent = progress
+    }, 1000)
   },
   methods: {
     updateProgress() {
-      this.progressPercent = (this.answeredItems / this.totalItems) * 100;
+      this.progressPercent = (this.answeredItems / this.totalItems) * 100
     }
   }
-};
+}
 </script>
 
 <style scoped>
