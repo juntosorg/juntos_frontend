@@ -12,7 +12,9 @@ import { RouterLink } from 'vue-router'
         <div class="col">
           <h1 class="lead fw-bold" style="font-size: 50pt">JunTOs</h1>
           <p class="lead">Bem-vindo ao seu game interativo!</p>
-          <RouterLink to="/comecar"><button class="green-button">Começar</button></RouterLink>
+          <RouterLink to="/formularios"
+            ><button class="btn btn-primary">Começar</button></RouterLink
+          >
         </div>
       </div>
     </div>

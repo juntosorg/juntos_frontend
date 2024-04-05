@@ -11,7 +11,7 @@ const router = createRouter({
       component: LandingView
     },
     {
-      path: '/comecar',
+      path: '/formularios',
       name: 'formsView',
       component: FormsView
     }

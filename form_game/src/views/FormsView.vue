@@ -3,7 +3,7 @@ import FormNavigationComponent from '../components/FormNavigationComponent.vue'
 </script>
 
 <template>
-  <main class="fixed-top background">
+  <main class="d-flex flex-column w-100 h-100 fixed-top background">
     <FormNavigationComponent />
   </main>
 </template>

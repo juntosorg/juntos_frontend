@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+const disabled = ref(true)
 defineProps<{
   question: String
   answers: String[]
@@ -8,23 +10,32 @@ const emits = defineEmits(['answerSelected'])
 
 const selectAnswer = (index: number) => {
   emits('answerSelected', index)
+  disabled.value = false
+  // enableOnNext.value = 1
 }
 </script>
 
 <template>
   <div
-    class="container-fluid bg-light border m-5 p-5 rounded-3 text-left shadow"
-    style="margin: auto"
+    class="container border mt-5 p-5 rounded-3 text-left shadow"
+    style="margin: auto; background-color: white"
   >
-    <h1 class="lead fw-bold mb-5 text-dark">{{ question }}</h1>
-    <div v-for="(answer, index) in answers" :key="index">
-      <label class="lead text-dark">
-        <input type="radio" :value="index" name="radio" @change="selectAnswer(index)" />
-        {{ answer }}
-      </label>
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="lead fw-bold mb-5 text-dark">{{ question }}</h1>
+      <img alt="JunTOs logo" class="juntos-logo" src="../assets/juntos_logo.png" />
     </div>
-    <div class="text-end">
-      <button class="btn btn-primary mt-5" v-on:click="onNext">Próximo</button>
+    <div class="row">
+      <div v-for="(answer, index) in answers" :key="index">
+        <label class="lead text-dark">
+          <input type="radio" :value="index" name="radio" @change="selectAnswer(index)" />
+          {{ answer }}
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="text-end">
+        <button class="btn btn-primary" :disabled="disabled" v-on:click="onNext">Próximo</button>
+      </div>
     </div>
   </div>
 </template>
@@ -32,5 +43,24 @@ const selectAnswer = (index: number) => {
 <style scoped>
 .shadow {
   box-shadow: 2px 2px 2px black;
+}
+.juntos-logo {
+  width: 15%;
+  height: 15%;
+}
+.button {
+  background-color: blue;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: rgb(0, 0, 186);
 }
 </style>

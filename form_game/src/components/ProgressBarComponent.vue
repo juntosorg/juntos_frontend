@@ -1,8 +1,9 @@
 <template>
-  <div class="progress-container">
-    <div class="progress">
+  <div class="container mt-5">
+    <div class="progress border shadow" style="background-color: white">
       <div class="progress-bar" :style="{ width: progressPercent + '%' }">
-        {{ Math.round(progressPercent) }}%
+        <!-- {{ Math.round(progressPercent) }}% -->
+        {{ answeredItems }} / {{ totalItems }}
       </div>
     </div>
   </div>
@@ -14,17 +15,17 @@ import { computed, defineProps } from 'vue'
 const props = defineProps({
   totalItems: {
     type: Number,
-    required: true,
+    required: true
   },
   answeredItems: {
     type: Number,
-    required: true,
+    required: true
   }
 })
 
 const progressPercent = computed(() => {
-  return (props.answeredItems / props.totalItems) * 100;
-});
+  return (props.answeredItems / props.totalItems) * 100
+})
 </script>
 
 <style scoped>
