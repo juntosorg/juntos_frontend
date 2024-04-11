@@ -12,6 +12,6 @@ import FormNavigationComponent from '../components/FormNavigationComponent.vue'
   .back-styled {
     background-color: #4caf4f78; 
     width: 100%; 
-    height: 100vh;
+    height: 100%;
   }
 </style>
