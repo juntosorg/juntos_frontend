@@ -17,13 +17,10 @@ const selectAnswer = (index: number) => {
 
 <template>
   <div
-    class="container border mt-5 p-5 rounded-3 text-left shadow"
-    style="margin: auto; background-color: white"
+    class="container border mt-5 p-5 rounded-3 shadow"
+    style="background-color: white;"
   >
-    <div class="d-flex justify-content-between align-items-center">
-      <h1 class="lead fw-bold mb-5 text-dark">{{ question }}</h1>
-      <img alt="JunTOs logo" class="juntos-logo" src="../assets/juntos_logo.png" />
-    </div>
+    <h1 class="lead fw-bold mb-5 text-dark">{{ question }}</h1>
     <div class="row">
       <div v-for="(answer, index) in answers" :key="index">
         <label class="lead text-dark">
@@ -34,13 +31,43 @@ const selectAnswer = (index: number) => {
     </div>
     <div class="row">
       <div class="text-end">
-        <button class="btn btn-primary" :disabled="disabled" v-on:click="onNext">Próximo</button>
+        <button class="btn green-button" :disabled="disabled" v-on:click="onNext">Próximo</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid black;
+  cursor: pointer;
+}
+input[type="radio"]:checked {
+  background-color: #4caf50;
+  border-color: black;
+}
+.green-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.green-button:hover {
+  background-color: #45a049;
+}
 .shadow {
   box-shadow: 2px 2px 2px black;
 }

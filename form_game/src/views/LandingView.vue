@@ -3,24 +3,23 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <div class="d-flex justify-content-center align-items-center">
-    <div class="col-md-6 text-center p-5">
-      <div class="row">
-        <div class="col">
-          <img alt="JunTOs logo" class="juntos-logo" src="../assets/juntos_logo.png" />
-        </div>
-        <div class="col">
-          <h1 class="lead fw-bold" style="font-size: 50pt">JunTOs</h1>
-          <p class="lead">Bem-vindo ao seu game interativo!</p>
-          <RouterLink to="/formularios"
-            ><button class="btn btn-primary">Começar</button></RouterLink
-          >
+  <div class="d-flex align-items-center justify-content-center" style="height: 100vh">
+    <div class="row">
+      <div class="text-center p-5">
+        <div class="row">
+          <div class="col">
+            <img alt="JunTOs logo" class="juntos-logo" src="../assets/juntos_logo.png" />
+          </div>
+          <div class="col">
+            <h1 class="lead fw-bold" style="font-size: 50pt">JunTOs</h1>
+            <p class="lead">Bem-vindo ao seu game interativo!</p>
+            <RouterLink to="/formularios">
+              <button class="btn green-button">Começar</button>
+            </RouterLink>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-6">
-      <img alt="Jovens rindo" class="teenagers-img" src="../assets/teenagers.jpeg" />
-    </div>
+      </div>
   </div>
 </template>
 

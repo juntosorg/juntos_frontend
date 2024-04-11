@@ -2,153 +2,15 @@
 import { ref, computed } from 'vue'
 import FormComponent from './FormComponent.vue'
 import ProgressBarComponent from '@/components/ProgressBarComponent.vue'
-const formData = [
-  {
-    question: 'Como você avaliaria sua qualidade de vida?',
-    answers: ['Muito ruim', 'Ruim', 'Nem ruim nem boa', 'Boa', 'Muito boa']
-  },
-  {
-    question: 'Quão satisfeito(a) você está com a sua saúde?',
-    answers: [
-      'Muito insatisfeito',
-      'Insatisfeito',
-      'Nem satisfeito nem insatisfeito',
-      'Satisfeito',
-      'Muito satisfeito'
-    ]
-  },
-  {
-    question:
-      'Em que medida você acha que sua dor (física) impede você de fazer o que você precisa?',
-    answers: ['Nada', 'Muito pouco', 'Mais ou menos', 'Bastante', 'Extremamente']
-  },
-  {
-    question:
-      'O quanto você precisa de algum tratamento médico para levar sua vida diária?',
-    answers: ['Nada', 'Muito pouco', 'Mais ou menos', 'Bastante', 'Extremamente']
-  },
-  {
-    question:
-      'O quanto você aproveita a vida?',
-    answers: ['Nada', 'Muito pouco', 'Mais ou menos', 'Bastante', 'Extremamente']
-  },
-  {
-    question:
-      'Em que medida você acha que a sua vida tem sentido?',
-    answers: ['Nada', 'Muito pouco', 'Mais ou menos', 'Bastante', 'Extremamente']
-  },
-  {
-    question:
-      'O quanto você consegue se concentrar?',
-    answers: ['Nada', 'Muito pouco', 'Mais ou menos', 'Bastante', 'Extremamente']
-  },
-  {
-    question:
-      'Quão seguro(a) você se sente em sua vida diária?',
-    answers: ['Nada', 'Muito pouco', 'Mais ou menos', 'Bastante', 'Extremamente']
-  },
-  {
-    question:
-      'Quão saudável é o seu ambiente físico (clima, barulho, poluição, atrativos)?',
-    answers: ['Nada', 'Muito pouco', 'Mais ou menos', 'Bastante', 'Extremamente']
-  },
-  {
-    question:
-      'Você tem energia suficiente para seu dia-a-dia?',
-    answers: ['Nada', 'Muito pouco', 'Médio', 'Muito', 'Completamente']
-  },
-  {
-    question:
-      'Você é capaz de aceitar sua aparência física?',
-    answers: ['Nada', 'Muito pouco', 'Médio', 'Muito', 'Completamente']
-  },
-  {
-    question:
-      'Você tem dinheiro suficiente para satisfazer suas necessidades?',
-    answers: ['Nada', 'Muito pouco', 'Médio', 'Muito', 'Completamente']
-  },
-  {
-    question:
-      'Quão disponíveis para você estão as informações que precisa no seu dia-a-dia?',
-    answers: ['Nada', 'Muito pouco', 'Médio', 'Muito', 'Completamente']
-  },
-  {
-    question:
-      'Em que medida você tem oportunidades de atividade de lazer?',
-    answers: ['Nada', 'Muito pouco', 'Médio', 'Muito', 'Completamente']
-  },
-  {
-    question:
-      'Quão bem você é capaz de se locomover?',
-    answers: ['Muito ruim', 'Ruim', 'Nem ruim nem bom', 'Bom', 'Muito bom']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com o seu sono?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com sua capacidade de desempenhar as atividades do seu dia-a-dia?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com sua capacidade para o trabalho?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está consigo mesmo?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com suas relações pessoais (amigos, parentes, conhecidos, colegas)?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com sua vida sexual?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com o apoio que você recebe de seus amigos?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com as condições do local onde mora?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com o seu acesso aos serviços de saúde?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Quão satisfeito(a) você está com o seu meio de transporte?',
-    answers: ['Muito insatisfeito', 'Insatisfeito', 'Nem satisfeito nem insatisfeito', 'Satisfeito', 'Muito satisfeito']
-  },
-  {
-    question:
-      'Com que frequência você tem sentimentos negativos tais como mau humor, desespero, ansiedade, depressão?',
-    answers: ['Nunca', 'Algumas vezes', 'Frequentemente', 'Muito frequentemente', 'Sempre']
-  },
-]
+import formData from '../assets/questions.json'
 const totalItems = ref(formData.length)
 const currForm = ref(0)
-const updateCurrForm = () => {
-  currForm.value++
-}
-// Verifica se todos os formularios foram respondidos
+const updateCurrForm = () => currForm.value++
 const isComplete = computed(() => currForm.value >= totalItems.value)
 </script>
 
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-center">
+  <div class="container-fluid">
     <ProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" />
     <div v-if="!isComplete">
       <FormComponent
@@ -162,4 +24,3 @@ const isComplete = computed(() => currForm.value >= totalItems.value)
     </div>
   </div>
 </template>
-<style scoped></style>
