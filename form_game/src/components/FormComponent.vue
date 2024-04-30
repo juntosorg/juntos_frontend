@@ -1,18 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+const selectedAnswer = ref(-1)
 const disabled = ref(true)
 defineProps<{
   question: String
   answers: String[]
-  onNext: ((payload: MouseEvent) => void) | undefined
 }>()
-const emits = defineEmits(['answerSelected'])
+const emits = defineEmits(['answerSelected', 'nextQuestion'])
 
 const selectAnswer = (index: number) => {
+  selectedAnswer.value = index
   emits('answerSelected', index)
   disabled.value = false
-  // enableOnNext.value = 1
 }
+
+const nextQuestion = () => {
+  selectedAnswer.value = -1  
+  disabled.value = true       
+  emits('nextQuestion')
+}
+
 </script>
 
 <template>
@@ -20,49 +27,53 @@ const selectAnswer = (index: number) => {
     class="container border mt-5 p-5 rounded-3 shadow"
     style="background-color: white;"
   >
-    <h1 class="lead fw-bold mb-5 text-dark">{{ question }}</h1>
-    <div class="row">
-      <div v-for="(answer, index) in answers" :key="index">
-        <label class="lead text-dark">
-          <input type="radio" :value="index" name="radio" @change="selectAnswer(index)" />
-          {{ answer }}
-        </label>
-      </div>
+    <h1 class="lead fw-bold mb-5 text-dark text-center">{{ question }}</h1>
+    <div class="row d-flex justify-content-between">
+      <button v-for="(answer, index) in answers" :key="index" 
+              class="btn answer-button shadow-button" :class="{ 'active': index === selectedAnswer }"
+              @click="selectAnswer(index)">
+        {{ answer }}
+      </button>
     </div>
     <div class="row">
-      <div class="text-end">
-        <button class="btn green-button" :disabled="disabled" v-on:click="onNext">Próximo</button>
+      <div class="col text-center mt-5">
+        <button class="btn green-button" :disabled="disabled" @click="nextQuestion">Próxima questão</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+.answer-button {
+  margin: 0 16px;
+  flex: 1;
+  border: 1px solid #ccc;
   background-color: white;
-  border: 2px solid black;
-  cursor: pointer;
+  color: black;
+  padding: 16px;
+  border-radius: 16px;
+  transition: background-color 0.3s, color 0.3s;
 }
-input[type="radio"]:checked {
+
+.answer-button:hover {
+  background-color: #f8f8f8;
+}
+
+.answer-button.active {
   background-color: #4caf50;
-  border-color: black;
+  color: white;
 }
+
 .green-button {
   background-color: #4caf50;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 16px 24px 16px 24px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
 }
 .green-button:hover {
@@ -71,23 +82,8 @@ input[type="radio"]:checked {
 .shadow {
   box-shadow: 2px 2px 2px black;
 }
-.juntos-logo {
-  width: 15%;
-  height: 15%;
-}
-.button {
-  background-color: blue;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.button:hover {
-  background-color: rgb(0, 0, 186);
+
+.shadow-button{
+  box-shadow: 0px 2px 4px 0px #00000040;
 }
 </style>

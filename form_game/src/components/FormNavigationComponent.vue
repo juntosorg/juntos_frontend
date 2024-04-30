@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import FormComponent from './FormComponent.vue'
-import ProgressBarComponent from '@/components/ProgressBarComponent.vue'
+import ProgressBarComponent from './ProgressBarComponent.vue'
 import formData from '../assets/questions.json'
+import FormHeaderComponent from './FormHeaderComponent.vue';
 const totalItems = ref(formData.length)
 const currForm = ref(0)
 const updateCurrForm = () => currForm.value++
@@ -11,13 +12,14 @@ const isComplete = computed(() => currForm.value >= totalItems.value)
 
 <template>
   <div class="container-fluid">
-    <ProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" />
     <div v-if="!isComplete">
+      <FormHeaderComponent />
       <FormComponent
         :question="formData[currForm].question"
         :answers="formData[currForm].answers"
-        :on-next="updateCurrForm"
+        @next-question="updateCurrForm"
       />
+      <ProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" />
     </div>
     <div v-else class="complete-message container text-center mt-5">
       <h1 class="fw-bold">Parabéns, questionário concluído!</h1>
