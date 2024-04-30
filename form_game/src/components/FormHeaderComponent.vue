@@ -1,11 +1,10 @@
 <template>
     <div class="header">
       <button @click="goBack" class="btn">Voltar</button>
-      <img src="@/assets/logo.png" alt="Logo" class="header-logo">
+      <img src="" alt="Logo" class="header-logo">
       <button @click="confirmClose" class="btn">Fechar</button>
     </div>
   
-    <!-- Popup de Confirmação para Fechar o Formulário -->
     <div v-if="showConfirm" class="popup-overlay">
       <div class="popup">
         <h2>Confirmar Fechamento</h2>
@@ -21,11 +20,11 @@
   import { useRouter } from 'vue-router';
   
   const showConfirm = ref(false);
+  const emits = defineEmits(['goBackQuestion']);
   const router = useRouter();
   
   const goBack = () => {
-    // Emitir evento ou chamar método para voltar à questão anterior
-    router.go(-1); // Exemplo de navegação simples para voltar
+    emits('goBackQuestion')
   }
   
   const confirmClose = () => {
@@ -34,7 +33,7 @@
   
   const closeForm = () => {
     showConfirm.value = false;
-    router.push('/'); // Ajuste para o caminho da página inicial
+    router.push('/');
   }
   </script>
   
@@ -46,7 +45,7 @@
     padding: 10px;
   }
   .header-logo {
-    max-width: 100px; /* Ajuste conforme necessário */
+    max-width: 100px;
   }
   .btn {
     padding: 5px 10px;

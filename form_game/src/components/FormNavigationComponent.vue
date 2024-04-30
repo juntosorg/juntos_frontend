@@ -4,16 +4,20 @@ import FormComponent from './FormComponent.vue'
 import ProgressBarComponent from './ProgressBarComponent.vue'
 import formData from '../assets/questions.json'
 import FormHeaderComponent from './FormHeaderComponent.vue';
+
 const totalItems = ref(formData.length)
 const currForm = ref(0)
 const updateCurrForm = () => currForm.value++
+const decrementCurrForm = () => {
+  if (currForm.value > 0) currForm.value--;
+};
 const isComplete = computed(() => currForm.value >= totalItems.value)
 </script>
 
 <template>
   <div class="container-fluid">
     <div v-if="!isComplete">
-      <FormHeaderComponent />
+      <FormHeaderComponent @goBackQuestion="decrementCurrForm"/>
       <FormComponent
         :question="formData[currForm].question"
         :answers="formData[currForm].answers"
