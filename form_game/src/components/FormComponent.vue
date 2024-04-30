@@ -2,9 +2,11 @@
 import { ref } from 'vue'
 const selectedAnswer = ref(-1)
 const disabled = ref(true)
+
 defineProps<{
   question: String
   answers: String[]
+  selectedAnswerIndex: Number
 }>()
 const emits = defineEmits(['answerSelected', 'nextQuestion'])
 
@@ -30,7 +32,7 @@ const nextQuestion = () => {
     <h1 class="lead fw-bold mb-5 text-dark text-center">{{ question }}</h1>
     <div class="row d-flex justify-content-between">
       <button v-for="(answer, index) in answers" :key="index" 
-              class="btn answer-button shadow-button" :class="{ 'active': index === selectedAnswer }"
+              class="btn answer-button shadow-button" :class="{ 'active': index === selectedAnswerIndex }"
               @click="selectAnswer(index)">
         {{ answer }}
       </button>
@@ -53,6 +55,16 @@ const nextQuestion = () => {
   padding: 16px;
   border-radius: 16px;
   transition: background-color 0.3s, color 0.3s;
+}
+
+@media (max-width: 770px) {
+  .row.d-flex {
+    flex-direction: column;
+  }
+  .answer-button {
+    margin: 8px 0;
+    flex: none;
+  }
 }
 
 .answer-button:hover {

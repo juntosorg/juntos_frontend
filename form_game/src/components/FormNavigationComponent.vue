@@ -7,6 +7,7 @@ import FormHeaderComponent from './FormHeaderComponent.vue';
 
 const totalItems = ref(formData.length)
 const currForm = ref(0)
+const selectedAnswers = ref(Array(formData.length).fill(-1));
 const updateCurrForm = () => currForm.value++
 const decrementCurrForm = () => {
   if (currForm.value > 0) currForm.value--;
@@ -21,7 +22,9 @@ const isComplete = computed(() => currForm.value >= totalItems.value)
       <FormComponent
         :question="formData[currForm].question"
         :answers="formData[currForm].answers"
+        :selectedAnswerIndex="selectedAnswers[currForm]"
         @next-question="updateCurrForm"
+        @answerSelected="answer => selectedAnswers[currForm] = answer"
       />
       <ProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" />
     </div>

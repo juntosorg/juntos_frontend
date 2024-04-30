@@ -1,16 +1,19 @@
 <template>
     <div class="header">
-      <button @click="goBack" class="btn">Voltar</button>
-      <img src="" alt="Logo" class="header-logo">
-      <button @click="confirmClose" class="btn">Fechar</button>
+      <button @click="goBack" class="button-back">
+        <span class="button-back-text">Retornar</span>
+        <i class="bi bi-arrow-left button-back-icon" ></i>
+      </button>
+      <img src="../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
+      <button @click="confirmClose" class="button-close"><i class="bi bi-x-lg"></i></button>
     </div>
   
     <div v-if="showConfirm" class="popup-overlay">
       <div class="popup">
         <h2>Confirmar Fechamento</h2>
         <p>Tem certeza que deseja fechar o formulário?</p>
-        <button @click="closeForm" class="btn">Sim</button>
-        <button @click="showConfirm = false" class="btn">Não</button>
+        <button @click="closeForm" class="button-popup">Sim</button>
+        <button @click="showConfirm = false" class="button-popup">Não</button>
       </div>
     </div>
   </template>
@@ -47,17 +50,13 @@
   .header-logo {
     max-width: 100px;
   }
-  .btn {
-    padding: 5px 10px;
-    margin: 0 10px;
-    cursor: pointer;
-  }
   .popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
     background-color: rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
@@ -68,5 +67,45 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 2;
   }
-  </style>
+  .button-close{
+    background-color: transparent;
+    border: none;
+  }
+  .button-back{
+    background-color: transparent;
+    padding: 16px 24px;
+    margin: 0 10px;
+    border: 1px solid #000;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .button-popup{
+    color: #000;
+    padding: 8px 16px;
+    margin: 0 10px;
+    border: 1px solid #000;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .button-back-icon {
+  display: none;
+  }
+
+  @media (max-width: 770px) {
+  .header-logo {
+    max-width: 80px;
+  }
+  .button-back-text {
+    display: none;
+  }
+  .button-back-icon {
+    display: inline-block;
+  }
+  .button-back {
+    padding: 12px;
+    border: none;
+  }
+}
+</style>
