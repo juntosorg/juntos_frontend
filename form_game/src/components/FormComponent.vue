@@ -25,12 +25,9 @@ const nextQuestion = () => {
 </script>
 
 <template>
-  <div
-    class="container border mt-5 p-5 rounded-3 shadow"
-    style="background-color: white;"
-  >
+  <div class="container-form">
     <h1 class="lead fw-bold mb-5 text-dark text-center">{{ question }}</h1>
-    <div class="row d-flex justify-content-between">
+    <div class="row d-flex justify-content-between mb-5">
       <button v-for="(answer, index) in answers" :key="index" 
               class="btn answer-button shadow-button" :class="{ 'active': index === selectedAnswerIndex }"
               @click="selectAnswer(index)">
@@ -46,6 +43,11 @@ const nextQuestion = () => {
 </template>
 
 <style scoped>
+.container-form{
+  padding: 5%;
+  padding-bottom: 0%
+}
+
 .answer-button {
   margin: 0 16px;
   flex: 1;

@@ -34,7 +34,7 @@ const progressPercent = computed(() => {
 }
 
 .progress {
-  height: 20px;
+  height: 25px;
   border-radius: 10px;
   background-color: #e9ecef;
 }

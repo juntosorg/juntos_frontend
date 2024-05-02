@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import FormNavigationComponent from '../components/FormNavigationComponent.vue'
+import InitialComponent from '@/components/InitialComponent.vue';
+
 </script>
 
 <template>
   <main class="d-flex flex-col back-styled">
-    <FormNavigationComponent />
+    <InitialComponent />
   </main>
 </template>
 

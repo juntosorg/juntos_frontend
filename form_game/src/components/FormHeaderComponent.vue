@@ -11,7 +11,7 @@
     <div v-if="showConfirm" class="popup-overlay">
       <div class="popup">
         <h2>Confirmar Fechamento</h2>
-        <p>Tem certeza que deseja fechar o formulário?</p>
+        <p>Tem certeza que deseja fechar o questionário?</p>
         <button @click="closeForm" class="button-popup">Sim</button>
         <button @click="showConfirm = false" class="button-popup">Não</button>
       </div>
@@ -48,7 +48,7 @@
     padding: 10px;
   }
   .header-logo {
-    max-width: 100px;
+    max-width: 120px;
   }
   .popup-overlay {
     position: fixed;
@@ -71,13 +71,18 @@
   }
   .button-close{
     background-color: transparent;
+    padding: 16px 24px;
+    margin: 0 10px;
     border: none;
+    color: #ADDAD3;
+    font-size: 1.5em;
   }
   .button-back{
     background-color: transparent;
     padding: 16px 24px;
     margin: 0 10px;
-    border: 1px solid #000;
+    border: 1px solid #ADDAD3;
+    color: #ADDAD3;
     border-radius: 12px;
     cursor: pointer;
   }
@@ -90,7 +95,9 @@
     cursor: pointer;
   }
   .button-back-icon {
-  display: none;
+    display: none;
+    color: #ADDAD3;
+    font-size: 1.5em;
   }
 
   @media (max-width: 770px) {
