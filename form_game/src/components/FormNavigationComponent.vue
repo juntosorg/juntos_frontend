@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import confetti from 'canvas-confetti';
 import FormComponent from './FormComponent.vue'
 import FormProgressBarComponent from './FormProgressBarComponent.vue'
 import formData from '../assets/questions.json'
@@ -25,11 +26,25 @@ const decrementCurrForm = () => {
   if (currForm.value > 0) currForm.value--;
 }
 
+const launchConfetti = () => {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
+}
+
 const isComplete = computed(() => currForm.value >= totalItems.value)
 const closeAwardPopup = () => {
   showAwardPopup.value = false;
   currForm.value++;
 }
+
+watch(isComplete, (newVal) => {
+  if (newVal) {
+    launchConfetti();
+  }
+});
 </script>
 
 <template>
