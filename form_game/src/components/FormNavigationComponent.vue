@@ -4,15 +4,32 @@ import FormComponent from './FormComponent.vue'
 import FormProgressBarComponent from './FormProgressBarComponent.vue'
 import formData from '../assets/questions.json'
 import FormHeaderComponent from './FormHeaderComponent.vue';
+import FormAwardComponent from './FormAwardComponent.vue'
 
 const totalItems = ref(formData.length)
 const currForm = ref(0)
 const selectedAnswers = ref(Array(formData.length).fill(-1));
-const updateCurrForm = () => currForm.value++
+const showAwardPopup = ref(false)
+
+const updateCurrForm = () => {
+  const answeredCount = selectedAnswers.value.filter(answer => answer !== -1).length;
+  if (answeredCount > 0 && answeredCount % 5 === 0) {
+    showAwardPopup.value = true;
+  } else {
+    showAwardPopup.value = false;
+    currForm.value++;
+  }
+}
+
 const decrementCurrForm = () => {
   if (currForm.value > 0) currForm.value--;
-};
+}
+
 const isComplete = computed(() => currForm.value >= totalItems.value)
+const closeAwardPopup = () => {
+  showAwardPopup.value = false;
+  currForm.value++;
+}
 </script>
 
 <template>
@@ -27,6 +44,7 @@ const isComplete = computed(() => currForm.value >= totalItems.value)
         @answerSelected="answer => selectedAnswers[currForm] = answer"
       />
       <FormProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" style="padding-bottom: 5%;" />
+      <FormAwardComponent v-if="showAwardPopup" @close="closeAwardPopup" />
     </div>
     <div v-else class="complete-message container text-center mt-5">
       <h1 class="fw-bold">Parabéns, questionário concluído!</h1>

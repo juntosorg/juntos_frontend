@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const messages = ['Estou aqui para ajudá-lo da melhor maneira possível. Para podermos nos conhecer melhor e oferecer um suporte personalizado, gostaria de fazer algumas perguntas.', 
 'Isso vai nos ajudar a entender suas necessidades e a oferecer o apoio mais adequado para você. Vamos começar?'];
@@ -8,6 +8,16 @@ const typedMessage1 = ref('');
 const typedMessage2 = ref('');
 const showButton = ref(false);
 const typingSpeed = 30;
+
+const router = useRouter();
+const transitioning = ref(false);
+
+function goToForm() {
+    transitioning.value = true;
+    setTimeout(() => {
+        router.push('/formularios');
+    }, 400);
+}
 
 function typeMessage(message: string, typedMessageRef: typeof typedMessage1, callback: () => void) {
     let index = 0;
@@ -29,7 +39,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="container">
+    <transition name="slide">
+        <div class="container" v-if="!transitioning">
         <div class="header">
             <div class="avatar">
                 <img src="../assets/avatar-ella.png" alt="Avatar" class="header-avatar"> 
@@ -47,15 +58,14 @@ onMounted(() => {
             </div>
         </div>
         <div v-if="showButton" class="form-button">
-            <RouterLink to="/formularios">
-                <button class="green-button">Questionário</button>
-            </RouterLink>
+            <button class="green-button" @click="goToForm">Questionário</button>
         </div>
         <div class="chat-input">
             <input type="text" class="chat-input-field" placeholder="Escreva uma mensagem" disabled>
             <i class="bi bi-send-fill"></i>
         </div>
     </div>
+    </transition>
 </template>
 
 <style scoped>
@@ -94,7 +104,7 @@ onMounted(() => {
 }
 
 .green-button {
-  background-color: #4caf50;
+  background-color: #3DB2A0;
   border: none;
   color: white;
   padding: 16px 24px;
@@ -158,5 +168,12 @@ onMounted(() => {
     transform: translateY(-50%);
     color: #12927E;
     cursor: pointer;
+}
+
+.slide-enter-active, .slide-leave-active {
+    transition: transform 0.5s;
+}
+.slide-enter, .slide-leave-to {
+    transform: translateX(100%);
 }
 </style>
