@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+
+import {  ref } from 'vue'
 const selectedAnswer = ref(-1)
 const disabled = ref(true)
+const isLoading = ref(false)
 
-defineProps<{
-  question: String
-  answers: String[]
-  selectedAnswerIndex: Number
+const { question, answers, selectedAnswerIndex } = defineProps<{
+  question: string
+  answers: string[]
+  selectedAnswerIndex: number
 }>()
 const emits = defineEmits(['answerSelected', 'nextQuestion'])
 
@@ -16,36 +18,40 @@ const selectAnswer = (index: number) => {
   disabled.value = false
 }
 
-const nextQuestion = () => {
+const nextQuestion = async () => {
+  isLoading.value = true;
   selectedAnswer.value = -1  
   disabled.value = true       
   emits('nextQuestion')
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  isLoading.value = false;
 }
 
 </script>
 
 <template>
   <div class="container-form">
-    <h1 class="lead fw-bold mb-5 text-dark text-center">{{ question }}</h1>
-    <div class="row d-flex justify-content-between mb-5">
-      <button v-for="(answer, index) in answers" :key="index" 
-              class="btn answer-button shadow-button" :class="{ 'active': index === selectedAnswerIndex }"
-              @click="selectAnswer(index)">
-        {{ answer }}
-      </button>
-    </div>
-    <div class="row">
-      <div class="col text-center mt-5">
-        <button class="btn green-button" :disabled="disabled" @click="nextQuestion">Próxima questão</button>
+      <h1 class="lead fw-bold mb-5 text-dark text-center">{{ question }}</h1>
+      <div class="row d-flex justify-content-between mb-5">
+        <button v-for="(answer, index) in answers" :key="index" 
+                class="btn answer-button shadow-button" :class="{ 'active': index === selectedAnswerIndex }"
+                @click="selectAnswer(index)">
+          {{ answer }}
+        </button>
       </div>
-    </div>
+      <div class="row">
+        <div class="col text-center mt-5">
+          <button class="btn green-button" :disabled="disabled || isLoading" @click="nextQuestion">Próxima questão</button>
+        </div>
+      </div>
   </div>
 </template>
 
 <style scoped>
 .container-form{
+  position: relative;
   padding: 5%;
-  padding-bottom: 0%
+  padding-bottom: 0%;
 }
 
 .answer-button {
@@ -57,16 +63,6 @@ const nextQuestion = () => {
   padding: 16px;
   border-radius: 16px;
   transition: background-color 0.3s, color 0.3s;
-}
-
-@media (max-width: 770px) {
-  .row.d-flex {
-    flex-direction: column;
-  }
-  .answer-button {
-    margin: 8px 0;
-    flex: none;
-  }
 }
 
 .answer-button:hover {
@@ -93,11 +89,7 @@ const nextQuestion = () => {
 .green-button:hover {
   background-color: #45a049;
 }
-.shadow {
-  box-shadow: 2px 2px 2px black;
-}
-
-.shadow-button{
+.shadow-button {
   box-shadow: 0px 2px 4px 0px #00000040;
 }
 </style>

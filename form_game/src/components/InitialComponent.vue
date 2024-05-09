@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+// const API = import.meta.env.VITE_API_URL
+const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev'
+
+const userId = ref('');
 
 const messages = ['Estou aqui para ajudá-lo da melhor maneira possível. Para podermos nos conhecer melhor e oferecer um suporte personalizado, gostaria de fazer algumas perguntas.', 
 'Isso vai nos ajudar a entender suas necessidades e a oferecer o apoio mais adequado para você. Vamos começar?'];
@@ -14,9 +20,14 @@ const transitioning = ref(false);
 
 function goToForm() {
     transitioning.value = true;
-    setTimeout(() => {
-        router.push('/formularios');
-    }, 400);
+    const userData = {}
+    
+    axios.post(`${API}/post/user`, userData).then(response => {
+        userId.value = response.data._id;
+        router.push({ path: '/formularios', query: { userId: userId.value } });
+    }).catch(error => {
+        console.error('Erro ao criar usuário: ', error)
+    })
 }
 
 function typeMessage(message: string, typedMessageRef: typeof typedMessage1, callback: () => void) {

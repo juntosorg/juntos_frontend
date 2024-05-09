@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import FormNavigationComponent from '../components/FormNavigationComponent.vue'
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const userId = ref(route.query.userId)
+
 </script>
 
 <template>
   <main class="d-flex flex-col back-styled">
-    <FormNavigationComponent />
+    <FormNavigationComponent
+    :userId="String(userId)"
+     />
   </main>
 </template>
 

@@ -1,48 +1,72 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import confetti from 'canvas-confetti';
+import { ref, computed, onMounted } from 'vue'
 import FormComponent from './FormComponent.vue'
 import FormProgressBarComponent from './FormProgressBarComponent.vue'
 import formData from '../assets/questions.json'
-import FormHeaderComponent from './FormHeaderComponent.vue';
+import FormHeaderComponent from './FormHeaderComponent.vue'
 import FormAwardComponent from './FormAwardComponent.vue'
+import FinalFormComponent from './FinalFormComponent.vue'
+import axios from 'axios'
 
 const totalItems = ref(formData.length)
 const currForm = ref(0)
-const selectedAnswers = ref(Array(formData.length).fill(-1));
+const selectedAnswers = ref(Array(formData.length).fill(-1))
 const showAwardPopup = ref(false)
 
-const updateCurrForm = () => {
-  const answeredCount = selectedAnswers.value.filter(answer => answer !== -1).length;
-  if (answeredCount > 0 && answeredCount % 5 === 0) {
-    showAwardPopup.value = true;
+const { userId } = defineProps<{
+  userId: string
+}>()
+
+// const API = import.meta.env.VITE_API_URL
+const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev'
+
+const updateCurrForm = async () => {
+  if (currForm.value === totalItems.value - 1) {
+    await endQuestion()
+    currForm.value++
   } else {
-    showAwardPopup.value = false;
-    currForm.value++;
+    const answeredCount = selectedAnswers.value.filter(answer => answer !== -1).length
+    if (answeredCount > 0 && answeredCount % 5 === 0) {
+      await endQuestion()
+      showAwardPopup.value = true;
+    } else {
+      await endQuestion()
+      currForm.value++
+      await startQuestion()
+      showAwardPopup.value = false
+    }
   }
-}
+};
 
 const decrementCurrForm = () => {
-  if (currForm.value > 0) currForm.value--;
-}
-
-const launchConfetti = () => {
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 }
-  });
+  if (currForm.value > 0) currForm.value--
 }
 
 const isComplete = computed(() => currForm.value >= totalItems.value)
-const closeAwardPopup = () => {
-  showAwardPopup.value = false;
-  currForm.value++;
+
+const closeAwardPopup = async () => {
+  showAwardPopup.value = false
+  currForm.value++
+  await startQuestion()
 }
 
-watch(isComplete, (newVal) => {
-  if (newVal) {
-    launchConfetti();
+const startQuestion = async () => {
+  await axios.patch(`${API}/patch/start/${String(userId)}?question_number=${Number(currForm.value)}`)
+    .then(response => console.log('start_question feita com sucesso'))
+    .catch(error => console.error('Erro ao fazer start_question: ', error))
+};
+
+const endQuestion = async () => {
+  const questionNumber = currForm.value
+  const answer = selectedAnswers.value[questionNumber]
+  await axios.patch(`${API}/patch/end/${String(userId)}?question_number=${Number(questionNumber)}&answer=${Number(answer)}`)
+    .then(response => console.log('end_question feita com sucesso'))
+    .catch(error => console.error('Erro ao fazer end_question: ', error))
+};
+
+onMounted(async () => {
+  if (currForm.value === 0) {
+    await startQuestion()
   }
 });
 </script>
@@ -55,14 +79,16 @@ watch(isComplete, (newVal) => {
         :question="formData[currForm].question"
         :answers="formData[currForm].answers"
         :selectedAnswerIndex="selectedAnswers[currForm]"
+        :userId="userId"
+        :questionNumber="Number(currForm)"
         @next-question="updateCurrForm"
         @answerSelected="answer => selectedAnswers[currForm] = answer"
       />
       <FormProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" style="padding-bottom: 5%;" />
       <FormAwardComponent v-if="showAwardPopup" @close="closeAwardPopup" />
     </div>
-    <div v-else class="complete-message container text-center mt-5">
-      <h1 class="fw-bold">Parabéns, questionário concluído!</h1>
+    <div v-else>
+      <FinalFormComponent />
     </div>
   </div>
 </template>
