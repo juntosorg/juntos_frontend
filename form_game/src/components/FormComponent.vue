@@ -10,6 +10,7 @@ const { question, answers, selectedAnswerIndex } = defineProps<{
   answers: string[]
   selectedAnswerIndex: number
 }>()
+
 const emits = defineEmits(['answerSelected', 'nextQuestion'])
 
 const selectAnswer = (index: number) => {
@@ -26,6 +27,7 @@ const nextQuestion = async () => {
   await new Promise(resolve => setTimeout(resolve, 2000));
   isLoading.value = false;
 }
+
 
 </script>
 
@@ -72,6 +74,16 @@ const nextQuestion = async () => {
 .answer-button.active {
   background-color: #4caf50;
   color: white;
+}
+
+@media (max-width: 770px) {
+  .row.d-flex {
+    flex-direction: column;
+  }
+  .answer-button {
+    margin: 8px 0;
+    flex: none;
+  }
 }
 
 .green-button {

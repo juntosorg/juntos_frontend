@@ -12,6 +12,7 @@ const totalItems = ref(formData.length)
 const currForm = ref(0)
 const selectedAnswers = ref(Array(formData.length).fill(-1))
 const showAwardPopup = ref(false)
+const awardsShown = ref(Array(Math.ceil(formData.length / 5)).fill(false))
 
 const { userId } = defineProps<{
   userId: string
@@ -26,9 +27,11 @@ const updateCurrForm = async () => {
     currForm.value++
   } else {
     const answeredCount = selectedAnswers.value.filter(answer => answer !== -1).length
-    if (answeredCount > 0 && answeredCount % 5 === 0) {
+    const awardIndex = Math.floor(answeredCount / 5)
+    if (answeredCount > 0 && answeredCount % 5 === 0 && !awardsShown.value[awardIndex]) {
       await endQuestion()
       showAwardPopup.value = true;
+      awardsShown.value[awardIndex] = true;
     } else {
       await endQuestion()
       currForm.value++
