@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import FormNavigationComponent from './FormNavigationComponent.vue';
 
-// const API = import.meta.env.VITE_API_URL
-const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev'
+const { userId } = defineProps<{
+  userId: string
+}>()
 
-const userId = ref('');
+const showForm = ref(false);
 
 const messages = ['Estou aqui para ajudá-lo da melhor maneira possível. Para podermos nos conhecer melhor e oferecer um suporte personalizado, gostaria de fazer algumas perguntas.', 
 'Isso vai nos ajudar a entender suas necessidades e a oferecer o apoio mais adequado para você. Vamos começar?'];
@@ -15,19 +15,12 @@ const typedMessage2 = ref('');
 const showButton = ref(false);
 const typingSpeed = 30;
 
-const router = useRouter();
 const transitioning = ref(false);
 
 function goToForm() {
     transitioning.value = true;
-    const userData = {}
+    showForm.value = true;
     
-    axios.post(`${API}/post/user`, userData).then(response => {
-        userId.value = response.data._id;
-        router.push({ path: '/formularios', query: { userId: userId.value } });
-    }).catch(error => {
-        console.error('Erro ao criar usuário: ', error)
-    })
 }
 
 function typeMessage(message: string, typedMessageRef: typeof typedMessage1, callback: () => void) {
@@ -51,31 +44,32 @@ onMounted(() => {
 
 <template>
     <transition name="slide">
-        <div class="container" v-if="!transitioning">
-        <div class="header">
-            <div class="avatar">
-                <img src="../assets/avatar-ella.png" alt="Avatar" class="header-avatar"> 
-                Ella
+        <div v-if="!showForm" class="container">
+            <div class="header">
+                <div class="avatar">
+                    <img src="../assets/avatar-ella.png" alt="Avatar" class="header-avatar"> 
+                    Ella
+                </div>
+                <img src="../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
+                <div></div>
             </div>
-            <img src="../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
-            <div></div>
-        </div>
-        <div class="chat">
-            <div class="chat-message bot">
-                <p>{{ typedMessage1 }}</p>
+            <div class="chat">
+                <div class="chat-message bot">
+                    <p>{{ typedMessage1 }}</p>
+                </div>
+                <div class="chat-message bot" v-if="typedMessage2">
+                    <p>{{ typedMessage2 }}</p>
+                </div>
             </div>
-            <div class="chat-message bot" v-if="typedMessage2">
-                <p>{{ typedMessage2 }}</p>
+            <div v-if="showButton" class="form-button">
+                <button class="green-button" @click="goToForm">Questionário</button>
+            </div>
+            <div class="chat-input">
+                <input type="text" class="chat-input-field" placeholder="Escreva uma mensagem" disabled>
+                <i class="bi bi-send-fill"></i>
             </div>
         </div>
-        <div v-if="showButton" class="form-button">
-            <button class="green-button" @click="goToForm">Questionário</button>
-        </div>
-        <div class="chat-input">
-            <input type="text" class="chat-input-field" placeholder="Escreva uma mensagem" disabled>
-            <i class="bi bi-send-fill"></i>
-        </div>
-    </div>
+        <FormNavigationComponent v-else :userId="userId" />
     </transition>
 </template>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import FormNavigationComponent from '../components/FormNavigationComponent.vue'
+import InitialNavigationComponent from '../components/InitialNavigationComponent.vue'
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -10,9 +10,7 @@ const userId = ref(route.query.userId)
 
 <template>
   <main class="d-flex flex-col back-styled">
-    <FormNavigationComponent
-    :userId="String(userId)"
-     />
+    <InitialNavigationComponent />
   </main>
 </template>
 
