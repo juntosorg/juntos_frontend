@@ -16,6 +16,7 @@ const router = createRouter({
       name: 'formsView',
       component: FormsView
     }
+
     // {
     // path: '/about',
     // name: 'about',

@@ -1,30 +1,34 @@
 <script setup lang="ts">
-import axios from 'axios';
+import axios from 'axios'
 import { onMounted, ref } from 'vue'
 
-const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev';
+const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev'
 
 const age = ref('')
-const userId = ref('');
+const userId = ref('')
 const emit = defineEmits(['continue'])
 
 onMounted(() => {
-    const userData = {};
-    axios.post(`${API}/post/user`, userData).then(response => {
-        userId.value = response.data._id;
-    }).catch(error => {
-        console.error('Erro ao criar usuário: ', error);
-    });
-});
+  const userData = {}
+  axios
+    .post(`${API}/post/user`, userData)
+    .then((response) => {
+      userId.value = response.data._id
+    })
+    .catch((error) => {
+      console.error('Erro ao criar usuário: ', error)
+    })
+})
 
 function continueToNext() {
-    axios.patch(`${API}/patch/${userId.value}`, { age: age.value })
-        .then(() => {
-            emit('continue', userId.value);
-        })
-        .catch(error => {
-            console.error('Erro ao atualizar idade: ', error);
-        });
+  axios
+    .patch(`${API}/patch/${userId.value}`, { age: age.value })
+    .then(() => {
+      emit('continue', userId.value)
+    })
+    .catch((error) => {
+      console.error('Erro ao atualizar idade: ', error)
+    })
 }
 </script>
 
@@ -66,7 +70,7 @@ function continueToNext() {
             <input
               v-model="age"
               type="number"
-              min="1"
+              min="12"
               max="120"
               name="age"
               placeholder="Idade"
@@ -126,6 +130,7 @@ function continueToNext() {
   margin: auto;
 }
 .continuar-btn:hover {
+  cursor: pointer;
   transform: scale(1.1);
   background-color: #4cb3c3;
 }
