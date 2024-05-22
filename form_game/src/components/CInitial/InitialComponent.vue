@@ -15,7 +15,7 @@ const messages = [
 const typedMessage1 = ref('')
 const typedMessage2 = ref('')
 const showButton = ref(false)
-const typingSpeed = 10
+const typingSpeed = 20
 
 const transitioning = ref(false)
 
@@ -46,12 +46,36 @@ onMounted(() => {
 <template>
   <transition name="slide">
     <div v-if="!showForm" class="container">
-      <div class="header">
+      <div class="header p-4">
         <div class="avatar">
           <img src="../../assets/avatar-ella.png" alt="Avatar" class="header-avatar" />
-          Ella
+          <span class="ella"> Ella</span>
         </div>
-        <img src="../../assets/juntos_logo_header.png" alt="Logo" class="header-logo" />
+        <div class="col-sm-4" style="width: auto">
+          <a href="https://juntos.art.br" target="blank" style="text-decoration: none">
+            <div class="row">
+              <div class="col-sm-2 my-auto text-center" style="width: auto">
+                <img
+                  src="../../assets/Logo Juntos.png"
+                  alt="Logo da JunTOs"
+                  class="img-fluid img-logo"
+                />
+              </div>
+              <div class="col-sm-4 my-auto" style="width: auto">
+                <div class="row text-center">
+                  <div class="col logo-text-title">JUNTOS</div>
+                </div>
+                <div class="row text-center">
+                  <div class="col logo-text-sub">METAVERSOS</div>
+                </div>
+                <div class="row text-center">
+                  <div class="col logo-text-sub">TERAPÊUTICOS</div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- <img src="../../assets/juntos_logo_header.png" alt="Logo" class="header-logo" /> -->
         <div></div>
       </div>
       <div class="chat">
@@ -63,7 +87,10 @@ onMounted(() => {
         </div>
       </div>
       <div v-if="showButton" class="form-button">
-        <button class="green-button" @click="goToForm">Continuar</button>
+        <!-- <button class="green-button" @click="goToForm">Continuar</button> -->
+        <div class="row mt-3 mobile-comecar-row" @click="goToForm">
+          <div class="col-12 text-center mobile-comecar">CONTINUAR</div>
+        </div>
       </div>
       <!-- <div class="chat-input">
                 <input type="text" class="chat-input-field" placeholder="Escreva uma mensagem" disabled>
@@ -85,11 +112,10 @@ onMounted(() => {
   padding-bottom: 60px;
 }
 .header {
-  background-color: #60c3b4;
+  background-color: #0ea08a;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
   border-radius: 0px 0px 8px 8px;
   width: 100vw;
   box-sizing: border-box;
@@ -183,5 +209,43 @@ onMounted(() => {
 .slide-enter,
 .slide-leave-to {
   transform: translateX(100%);
+}
+.ella {
+  font-weight: 500;
+  font-size: 16pt;
+}
+.img-logo {
+  height: 5rem;
+  width: 5rem;
+}
+.logo-text-title {
+  font-family: Roboto, sans-serif;
+  letter-spacing: 3pt;
+  font-weight: bold;
+  color: white;
+  font-size: 18pt;
+}
+.logo-text-sub {
+  font-family: Roboto, sans-serif;
+  letter-spacing: 3pt;
+  color: white;
+  font-size: 8pt;
+}
+.mobile-comecar {
+  cursor: pointer;
+  font-family: Roboto, sans-serif;
+  letter-spacing: 0.1rem;
+  color: white;
+  background-color: #0ea08a;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  margin-bottom: 10rem;
+}
+.mobile-comecar:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color: #4cb3c3;
 }
 </style>

@@ -77,6 +77,9 @@ function convertNewlinesToBreaks(text: string) {
     </div>
     <div class="row" id="text-box">
       <p v-html="convertNewlinesToBreaks(content)" class="content-style"></p>
+      <div class="mt-5">
+        <div class="col-12 text-center mobile-comecar" @click="closePopup">PRÓXIMA QUESTÃO</div>
+      </div>
     </div>
   </div>
 </template>
@@ -173,5 +176,22 @@ p {
 }
 .scroller {
   margin-top: 3rem;
+}
+.mobile-comecar {
+  cursor: pointer;
+  font-family: Roboto, sans-serif;
+  letter-spacing: 0.1rem;
+  color: white;
+  background-color: #0ea08a;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  margin-bottom: 10rem;
+}
+.mobile-comecar:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color: #4cb3c3;
 }
 </style>

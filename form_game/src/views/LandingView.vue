@@ -56,12 +56,12 @@ function toggleMenu() {
                 <RouterLink to="/" @click="toggleMenu" class="mobile-menu-item"> Home </RouterLink>
                 <!-- <a href="" @click="toggleMenu" class="mobile-menu-item">Home</a> -->
               </li>
-              <li>
+              <!-- <li>
                 <RouterLink to="/contato" @click="toggleMenu" class="mobile-menu-item">
                   Contato
                 </RouterLink>
-                <!-- <a href="" @click="toggleMenu" class="mobile-menu-item">Contato</a> -->
-              </li>
+                <a href="" @click="toggleMenu" class="mobile-menu-item">Contato</a>
+              </li> -->
               <!-- <li>
                 <a href="" @click="toggleMenu" class="mobile-menu-item">Termos de Serviço</a>
               </li> -->
@@ -75,10 +75,10 @@ function toggleMenu() {
                   <RouterLink to="/" class="nav-link white-color"> Home </RouterLink>
                   <!-- <a href="" @click="toggleMenu" class="mobile-menu-item">Home</a> -->
                 </li>
-                <li class="nav-item menu-item">
+                <!-- <li class="nav-item menu-item">
                   <RouterLink to="/contato" class="nav-link white-color"> Contato </RouterLink>
-                  <!-- <a href="" @click="toggleMenu" class="mobile-menu-item">Contato</a> -->
-                </li>
+                  <a href="" @click="toggleMenu" class="mobile-menu-item">Contato</a>
+                </li> -->
                 <!-- <li class="nav-item menu-item">
                   <a class="nav-link white-color" href="#">Termos de Serviço</a>
                 </li>
@@ -87,6 +87,13 @@ function toggleMenu() {
                 </li> -->
               </ul>
             </div>
+            <a
+              href="https://hospitaldonahelena.centraldemarcacao.com.br/"
+              target="new"
+              class="consult-button"
+            >
+              Marcar uma consulta</a
+            >
           </nav>
         </div>
         <div class="row">
@@ -236,6 +243,9 @@ function toggleMenu() {
   .mobile-comecar-row {
     display: block;
   }
+  .consult-button {
+    display: none;
+  }
   .emotions-sub {
     width: 100%;
   }
@@ -374,5 +384,19 @@ function toggleMenu() {
 }
 .menu-links.open {
   max-height: 50rem;
+}
+.consult-button {
+  background-color: #fff;
+  color: #0ea08a;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 24px 16px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-right: 3rem;
+}
+.consult-button:hover {
+  transform: scale(1.1);
 }
 </style>

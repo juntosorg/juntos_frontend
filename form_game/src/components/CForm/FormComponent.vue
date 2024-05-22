@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import {  ref } from 'vue'
+import { ref } from 'vue'
 const selectedAnswer = ref(-1)
 const disabled = ref(true)
 const isLoading = ref(false)
@@ -20,37 +19,48 @@ const selectAnswer = (index: number) => {
 }
 
 const nextQuestion = async () => {
-  isLoading.value = true;
-  selectedAnswer.value = -1  
-  disabled.value = true       
+  isLoading.value = true
+  selectedAnswer.value = -1
+  disabled.value = true
   emits('nextQuestion')
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  isLoading.value = false;
+  await new Promise((resolve) => setTimeout(resolve, 2000))
+  isLoading.value = false
 }
-
-
 </script>
 
 <template>
   <div class="container-form">
-      <h1 class="lead fw-bold mb-5 text-dark text-center">{{ question }}</h1>
-      <div class="row d-flex justify-content-between mb-5">
-        <button v-for="(answer, index) in answers" :key="index" 
-                class="btn answer-button shadow-button" :class="{ 'active': index === selectedAnswerIndex }"
-                @click="selectAnswer(index)">
-          {{ answer }}
-        </button>
-      </div>
-      <div class="row">
-        <div class="col text-center mt-5">
-          <button class="btn green-button" :disabled="disabled || isLoading" @click="nextQuestion">Próxima questão</button>
+    <h1 class="lead fw-bold mb-5 text-dark text-center">{{ question }}</h1>
+    <div class="row d-flex justify-content-between mb-5">
+      <button
+        v-for="(answer, index) in answers"
+        :key="index"
+        class="btn answer-button shadow-button"
+        :class="{ active: index === selectedAnswerIndex }"
+        @click="selectAnswer(index)"
+      >
+        {{ answer }}
+      </button>
+    </div>
+    <div class="row">
+      <div class="col text-center mt-5">
+        <!-- <button class="btn green-button" :disabled="disabled || isLoading" @click="nextQuestion">Próxima questão</button> -->
+        <div class="row mt-3 mobile-comecar-row">
+          <div
+            class="col-12 text-center mobile-comecar"
+            :style="disabled || isLoading ? 'pointer-events: none; opacity: 0.7' : ''"
+            @click="nextQuestion"
+          >
+            PRÓXIMA QUESTÃO
+          </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.container-form{
+.container-form {
   position: relative;
   padding: 5%;
   padding-bottom: 0%;
@@ -64,7 +74,9 @@ const nextQuestion = async () => {
   color: black;
   padding: 16px;
   border-radius: 16px;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .answer-button:hover {
@@ -72,7 +84,7 @@ const nextQuestion = async () => {
 }
 
 .answer-button.active {
-  background-color: #4caf50;
+  background-color: #0ea08a;
   color: white;
 }
 
@@ -103,5 +115,22 @@ const nextQuestion = async () => {
 }
 .shadow-button {
   box-shadow: 0px 2px 4px 0px #00000040;
+}
+.mobile-comecar {
+  cursor: pointer;
+  font-family: Roboto, sans-serif;
+  letter-spacing: 0.1rem;
+  color: white;
+  background-color: #0ea08a;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  margin-bottom: 10rem;
+}
+.mobile-comecar:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color: #4cb3c3;
 }
 </style>

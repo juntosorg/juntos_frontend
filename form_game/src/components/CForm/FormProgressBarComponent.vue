@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="progress border shadow" style="background-color: white">
-      <div class="progress-bar" :style="{ width: progressPercent + '%'}">
+      <div class="progress-bar" :style="{ width: progressPercent + '%' }">
         {{ Math.round(progressPercent) }}%
         <!-- {{ answeredItems }} / {{ totalItems }} -->
       </div>
@@ -44,7 +44,7 @@ const progressPercent = computed(() => {
   line-height: 20px;
   text-align: center;
   border-radius: 10px;
-  background-color: #4caf50;
+  background-color: #0ea08a;
   color: #ffffff;
 }
 </style>

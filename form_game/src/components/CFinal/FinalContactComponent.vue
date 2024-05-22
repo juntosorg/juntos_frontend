@@ -20,7 +20,7 @@ const email = ref('')
           <div class="row no-gutts d-flex justify-content-center align-items-center">
             <div class="col-6 my-auto text-center" style="width: auto">
               <img
-                src="../assets/Logo Juntos.png"
+                src="../../assets/Logo Juntos.png"
                 alt="Logo da JunTOs"
                 class="img-fluid img-logo"
               />
@@ -99,7 +99,7 @@ const email = ref('')
         <div
           class="d-sm-flex flex-column align-items-center justify-content-center col-sm-6 image-div"
         >
-          <img src="../assets/contact.png" class="img img-fluid" alt="Contato" />
+          <img src="../../assets/contact.png" class="img img-fluid" alt="Contato" />
         </div>
       </div>
     </div>
