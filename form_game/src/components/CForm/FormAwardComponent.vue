@@ -5,20 +5,19 @@
             <h2>Parabens pelo progresso!</h2>
             <p>Como recompensa pela sua dedicação, você recebeu dois prêmios especiais!</p>
         </div>
-        <div class="award-buttons-container">
+        <div @click="emitAward('artigo')" class="award-buttons-container">
             <button class="award-button-item">
-                <img src="../assets/article-img.png" alt="article" class="img-btn">
+                <img src="../../assets/article-img.png" alt="article" class="img-btn">
                 <span>Artigo</span>
             </button>
-            <button class="award-button-item">
-                <img src="../assets/fanfic-img.png" alt="fanfic" class="img-btn">
+            <button @click="emitAward('fanfic')" class="award-button-item">
+                <img src="../../assets/fanfic-img.png" alt="fanfic" class="img-btn">
                 <span>Fanfic</span>
             </button>
         </div>
         <div class="continue-button-container">
             <button @click="closePopup" class="green-button">Continuar</button>
         </div>
-            
       </div>
       
     </div>
@@ -26,10 +25,14 @@
 
 <script setup lang="ts">
 
-const emits = defineEmits(['close'])
+const emits = defineEmits(['close', 'award'])
 
 const closePopup = () => {
   emits('close')
+}
+
+const emitAward = (type: string) => {
+  emits('award', type)
 }
 </script>
 
@@ -41,7 +44,7 @@ const closePopup = () => {
         width: 100%;
         height: 100%;
         z-index: 1;
-        background-color: rgba(0,0,0,0.5);
+        background-color: #60C3B4;
         display: flex;
         justify-content: center;
         align-items: center;

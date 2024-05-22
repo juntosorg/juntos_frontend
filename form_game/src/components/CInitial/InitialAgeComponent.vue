@@ -43,7 +43,7 @@ function continueToNext() {
           <div class="row no-gutts d-flex justify-content-center align-items-center">
             <div class="col-6 my-auto text-center" style="width: auto">
               <img
-                src="../assets/Logo Juntos.png"
+                src="../../assets/Logo Juntos.png"
                 alt="Logo da JunTOs"
                 class="img-fluid img-logo"
               />

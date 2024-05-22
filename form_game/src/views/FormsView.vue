@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import InitialNavigationComponent from '../components/InitialNavigationComponent.vue'
+import InitialNavigationComponent from '../components/CInitial/InitialNavigationComponent.vue'
 import { useRoute } from 'vue-router';
 
 const route = useRoute();

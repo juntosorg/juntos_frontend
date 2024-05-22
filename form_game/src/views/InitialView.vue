@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import InitialComponent from '../components/InitialComponent.vue';
+import InitialComponent from '../components/CInitial/InitialComponent.vue';
 
 </script>
 

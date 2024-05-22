@@ -2,17 +2,39 @@
 import { ref, computed, onMounted } from 'vue'
 import FormComponent from './FormComponent.vue'
 import FormProgressBarComponent from './FormProgressBarComponent.vue'
-import formData from '../assets/questions.json'
+import formData from '../../assets/questions.json'
+import premios from '../../assets/premios.json'
 import FormHeaderComponent from './FormHeaderComponent.vue'
 import FormAwardComponent from './FormAwardComponent.vue'
-import FinalFormComponent from './FinalFormComponent.vue'
+import FinalFormComponent from '../CFinal/FinalFormComponent.vue'
+import PresenteComponent from './FormPresenteComponent.vue'
 import axios from 'axios'
 
 const totalItems = ref(formData.length)
 const currForm = ref(0)
 const selectedAnswers = ref(Array(formData.length).fill(-1))
 const showAwardPopup = ref(false)
+const showPresente = ref(false)
 const awardsShown = ref(Array(Math.ceil(formData.length / 5)).fill(false))
+
+const presentTitle = ref('')
+const presentContent = ref('')
+
+const handleAward = (type: string) => {
+  const awards = premios.filter(award => award.tipo === type)
+  const randomAward = awards[Math.floor(Math.random() * awards.length)]
+  presentTitle.value = randomAward.titulo
+  presentContent.value = randomAward.conteudo
+  showAwardPopup.value = false
+  showPresente.value = true
+}
+
+const handleClosePresente = async () => {
+  showPresente.value = false
+  currForm.value++
+  await startQuestion()
+}
+
 
 const { userId } = defineProps<{
   userId: string
@@ -55,7 +77,7 @@ const closeAwardPopup = async () => {
 
 const startQuestion = async () => {
   await axios.patch(`${API}/patch/start/${String(userId)}?question_number=${Number(currForm.value)}`)
-    .then(response => console.log('start_question feita com sucesso'))
+    // .then(response => console.log('start_question feita com sucesso'))
     .catch(error => console.error('Erro ao fazer start_question: ', error))
 };
 
@@ -63,7 +85,7 @@ const endQuestion = async () => {
   const questionNumber = currForm.value
   const answer = selectedAnswers.value[questionNumber]
   await axios.patch(`${API}/patch/end/${String(userId)}?question_number=${Number(questionNumber)}&answer=${Number(answer)}`)
-    .then(response => console.log('end_question feita com sucesso'))
+    // .then(response => console.log('end_question feita com sucesso'))
     .catch(error => console.error('Erro ao fazer end_question: ', error))
 };
 
@@ -88,7 +110,13 @@ onMounted(async () => {
         @answerSelected="answer => selectedAnswers[currForm] = answer"
       />
       <FormProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" style="padding-bottom: 5%;" />
-      <FormAwardComponent v-if="showAwardPopup" @close="closeAwardPopup" />
+      <FormAwardComponent v-if="showAwardPopup" @award="handleAward" @close="closeAwardPopup" />
+      <PresenteComponent
+      v-if="showPresente"
+      :title="presentTitle"
+      :content="presentContent"
+      @close="handleClosePresente"
+      />
     </div>
     <div v-else>
       <FinalFormComponent />

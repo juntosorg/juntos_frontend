@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import FormNavigationComponent from './FormNavigationComponent.vue';
+import FormNavigationComponent from '../CForm/FormNavigationComponent.vue';
 
 const { userId } = defineProps<{
   userId: string
@@ -47,10 +47,10 @@ onMounted(() => {
         <div v-if="!showForm" class="container">
             <div class="header">
                 <div class="avatar">
-                    <img src="../assets/avatar-ella.png" alt="Avatar" class="header-avatar"> 
+                    <img src="../../assets/avatar-ella.png" alt="Avatar" class="header-avatar"> 
                     Ella
                 </div>
-                <img src="../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
+                <img src="../../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
                 <div></div>
             </div>
             <div class="chat">
@@ -62,12 +62,12 @@ onMounted(() => {
                 </div>
             </div>
             <div v-if="showButton" class="form-button">
-                <button class="green-button" @click="goToForm">Questionário</button>
+                <button class="green-button" @click="goToForm">Continuar</button>
             </div>
-            <div class="chat-input">
+            <!-- <div class="chat-input">
                 <input type="text" class="chat-input-field" placeholder="Escreva uma mensagem" disabled>
                 <i class="bi bi-send-fill"></i>
-            </div>
+            </div> -->
         </div>
         <FormNavigationComponent v-else :userId="userId" />
     </transition>

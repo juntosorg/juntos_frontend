@@ -4,7 +4,7 @@
         <span class="button-back-text">Retornar</span>
         <i class="bi bi-arrow-left button-back-icon" ></i>
       </button>
-      <img src="../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
+      <img src="../../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
       <button @click="confirmClose" class="button-close"><i class="bi bi-x-lg"></i></button>
     </div>
   

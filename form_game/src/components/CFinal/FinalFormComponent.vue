@@ -24,11 +24,11 @@ onMounted(() => {
 
 <template>
     <div class="header">
-      <img src="../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
+      <img src="../../assets/juntos_logo_header.png" alt="Logo" class="header-logo">
     </div>
     <div class="popup-overlay">
       <div class="popup">
-        <img src="../assets/congratulations-img.png" alt="Congratulations" class="congratulations-logo">
+        <img src="../../assets/congratulations-img.png" alt="Congratulations" class="congratulations-logo">
         <div class="container-text">
             <h1>
                 Parabéns!

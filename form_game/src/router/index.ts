@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 // import LandingView from '@/views/LandingView.vue'
 import FormsView from '@/views/FormsView.vue'
 import LandingViewNew from '@/views/LandingViewNew.vue'
-import PresenteComponent from '@/components/PresenteComponent.vue'
+// import PresenteComponent from '@/components/PresenteComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,11 +17,11 @@ const router = createRouter({
       name: 'formsView',
       component: FormsView
     },
-    {
-      path: '/presente',
-      name: 'Presente',
-      component: PresenteComponent
-    }
+    // {
+    //   path: '/presente',
+    //   name: 'Presente',
+    //   component: PresenteComponent
+    // }
 
     // {
     // path: '/about',
