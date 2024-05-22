@@ -1,21 +1,31 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { ref, onMounted, watch, nextTick } from 'vue'
+import axios from 'axios';
 
 const userMessage = ref('')
 const messages = ref([{ text: 'Olá, Eu sou a Ella. Conte-me como você está ?', sender: 'bot' }])
 
-const sendMessage = () => {
+const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev'
+
+const sendMessage = async () => {
   if (userMessage.value.trim() !== '') {
+    const userText = userMessage.value
     messages.value.push({ text: userMessage.value, sender: 'user' })
     userMessage.value = ''
     nextTick(() => {
-      setTimeout(() => {
-        messages.value.push({ text: 'Eu sou a Ella e estou aqui para ajudar..', sender: 'bot' })
-        nextTick(scrollToBottom)
-      }, 1000) // Delay de 1 segundo
       nextTick(scrollToBottom)
     })
+    try {
+      const response = await axios.post(`${API}/chat/post`, { user_message: userText })
+      const botMessage = response.data.assistant_message
+      messages.value.push({ text: botMessage, sender: 'bot' })
+    } catch (error) {
+      console.error('Error sending message:', error)
+      messages.value.push({ text: 'Desculpe, houve um erro ao processar sua mensagem. Por favor, tente novamente.', sender: 'bot' })
+    } finally {
+      nextTick(scrollToBottom)
+    }
   }
 }
 
