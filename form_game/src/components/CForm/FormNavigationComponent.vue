@@ -6,7 +6,7 @@ import formData from '../../assets/questions.json'
 import premios from '../../assets/premios.json'
 import FormHeaderComponent from './FormHeaderComponent.vue'
 import FormAwardComponent from './FormAwardComponent.vue'
-import FinalFormComponent from '../CFinal/FinalFormComponent.vue'
+import FinalNavigationComponent from '../CFinal/FinalNavigationComponent.vue'
 import PresenteComponent from './FormPresenteComponent.vue'
 import axios from 'axios'
 
@@ -119,7 +119,7 @@ onMounted(async () => {
       />
     </div>
     <div v-else>
-      <FinalFormComponent />
+      <FinalNavigationComponent />
     </div>
   </div>
 </template>

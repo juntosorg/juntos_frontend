@@ -3,11 +3,12 @@ import confetti from 'canvas-confetti';
 import { onMounted } from 'vue';
 
 
-const emits = defineEmits(['close'])
+const emits = defineEmits(['switch']);
 
-const closePopup = () => {
-  emits('close')
-}
+const handleButtonClick = () => {
+  emits('switch');
+};
+
 
 const launchConfetti = () => {
   confetti({
@@ -40,7 +41,7 @@ onMounted(() => {
                 Você está pronto para começar nossa conversa agora? Estou aqui para ajudar. Sinta-se à vontade para compartilhar o que está em sua mente.
             </p>
             <div class="button-container">
-                <button @click="closePopup" class="green-button">Conversar</button>
+                <button @click="handleButtonClick" class="green-button">Conversar</button>
             </div>
             
         </div>

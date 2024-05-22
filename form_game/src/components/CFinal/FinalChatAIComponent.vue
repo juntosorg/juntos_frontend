@@ -1,24 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 
 const userMessage = ref('');
 const messages = ref([
-  { text: 'Olá, John Doe! Conte-me como você está ?', sender: 'bot' },
-  { text: 'Eu estou triste', sender: 'user' },
-  { text: 'O que aconteceu com você?', sender: 'bot' },
-  { text: 'Minha família não me entende.', sender: 'user' },
-  { text: 'Entendi. Eu quero que saiba que eu estou aqui para ouvir e entender você.', sender: 'bot' }
+  { text: 'Olá, Eu sou a Ella. Conte-me como você está ?', sender: 'bot' },
 ]);
 
 const sendMessage = () => {
   if (userMessage.value.trim() !== '') {
     messages.value.push({ text: userMessage.value, sender: 'user' });
     userMessage.value = '';
-    setTimeout(() => {
-      messages.value.push({ text: 'Eu sou um bot e estou aqui para ajudar.', sender: 'bot' });
-      scrollToBottom();
-    }, 1000);
-    scrollToBottom();
+    nextTick(() => {
+      setTimeout(() => {
+        messages.value.push({ text: 'Eu sou a Ella e estou aqui para ajudar..', sender: 'bot' });
+        nextTick(scrollToBottom);
+      }, 1000); // Delay de 1 segundo
+      nextTick(scrollToBottom);
+    });
   }
 };
 
@@ -30,12 +28,15 @@ const handleKeyPress = (event: KeyboardEvent) => {
 
 const scrollToBottom = () => {
   const chatContainer = document.querySelector('.chat-container');
-  chatContainer?.scrollTo(0, chatContainer.scrollHeight);
+  chatContainer?.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
 };
 
-onMounted(() => {
-  scrollToBottom();
-});
+onMounted(scrollToBottom);
+
+watch(messages, () => {
+  nextTick(scrollToBottom);
+}, { deep: true });
+
 </script>
 
 <template>
@@ -77,7 +78,7 @@ onMounted(() => {
     width: 100%;
     height: 100vh;
     box-sizing: border-box;
-    padding-bottom: 60px;
+    padding-bottom: 5px;
 }
 .header {
     background-color: #0EA08A;
@@ -134,12 +135,12 @@ onMounted(() => {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  max-width: 1000px;
+  max-width: 100vw;
   margin-top: 20px;
   padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
-  max-height: 60vh;
+  flex-grow: 1;
 }
 
 .message {
@@ -161,28 +162,24 @@ onMounted(() => {
   align-self: flex-start;
 }
 
-.chat-input{
-    position: absolute;
-    display: flex;
-    bottom: 0;
-    width: 100%;
-    padding: 12px 24px;
-    align-items: center;
+.chat-input {
+  display: flex;
+  width: 100%;
+  padding: 12px 24px;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .chat-input-field {
-    width: 100%;
-    padding: 18px 16px 18px 16px;
-    border-radius: 12px;
-    border: 2px solid #ADDAD3;
+  width: calc(100% - 40px);
+  padding: 18px 16px;
+  border-radius: 12px;
+  border: 2px solid #ADDAD3;
 }
 
-.bi-send-fill{
-    position: absolute;
-    right: 50px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #12927E;
-    cursor: pointer;
+.bi-send-fill {
+  margin-left: -40px;
+  color: #12927E;
+  cursor: pointer;
 }
 </style>
