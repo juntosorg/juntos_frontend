@@ -1,4 +1,23 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const scrollContainer = document.getElementById('text-box')
+  const progressBar = document.getElementById('progress-bar')
+  const headerBox = document.getElementsByClassName('header-box')[0]
+  if (scrollContainer && headerBox) {
+    scrollContainer.style.marginTop = `${headerBox.clientHeight + 5}px`
+  }
+  if (scrollContainer && progressBar) {
+    scrollContainer.addEventListener('scroll', () => {
+      const scrollTop = scrollContainer.scrollTop
+      const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight
+      const scrollPercentage = (scrollTop / scrollHeight) * 100
+      progressBar.style.width = `${scrollPercentage}%`
+    })
+  }
+})
+
 defineProps({
   title: String,
   content: String
@@ -9,12 +28,14 @@ const emits = defineEmits(['close'])
 const closePopup = () => {
   emits('close')
 }
-
+function convertNewlinesToBreaks(text: string) {
+  return text.replace(/\n/g, '<br>')
+}
 </script>
 
 <template>
   <div class="container-fluid popup-overlay">
-    <div class="d-flex flex-column mx-5">
+    <div class="header-box d-flex flex-column">
       <div class="row d-flex align-items-center justify-content-center mt-3">
         <div class="col-6">
           <a href="https://juntos.art.br" target="blank" style="text-decoration: none">
@@ -46,11 +67,16 @@ const closePopup = () => {
           </div>
         </div>
       </div>
-      <div class="row scroller"></div>
-      <h1>{{ title }}</h1>
+      <div class="progress-box">
+        <div id="progress-border"></div>
+        <div id="progress-bar"></div>
+      </div>
+      <div class="row title-row">
+        <h1 class="title-style">{{ title }}</h1>
+      </div>
     </div>
-    <div class="row text-box my-3">
-      <p v-html="content"></p>
+    <div class="row" id="text-box">
+      <p v-html="convertNewlinesToBreaks(content)" class="content-style"></p>
     </div>
   </div>
 </template>
@@ -61,19 +87,74 @@ const closePopup = () => {
   margin: 0;
   padding: 0;
 }
-
+.header-box {
+  padding: 0 1.8rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: auto;
+  width: 100%;
+}
+#text-box {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 80%;
+  text-align: center;
+  margin: 3rem auto;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.progress-box {
+  position: relative;
+  margin-top: 3rem;
+  background-color: blue;
+}
+#progress-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0.1rem solid #86d2c6;
+  height: 1rem;
+  border-radius: 1rem;
+  width: 100%;
+  background-color: white;
+}
+#progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 5px solid #86d2c6;
+  height: 1rem;
+  border-radius: 1rem;
+  /* width: 10%; */
+  max-width: 100%;
+  background-color: #86d2c6;
+  z-index: 1;
+}
+.title-row {
+  margin-top: 3rem;
+}
+.title-style {
+  text-align: left;
+  /* background-color: red; */
+  width: 80%;
+  margin: 0 auto;
+}
+.content-style {
+  font-size: 18pt;
+}
 .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      background-color: #fff;
-      display: flex;
-      justify-content: flex-start;
-    }
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #fff;
+  display: flex;
+  justify-content: flex-start;
+}
 h1 {
   text-align: center;
   font-weight: bold;
@@ -86,18 +167,11 @@ h1 {
 .close:hover {
   cursor: pointer;
 }
-.text-block {
-  position: absolute;
-  width: 100%;
-  margin-top: 500px;
-  z-index: 10;
-  height: 100%;
-  max-height: 1340px;
-  overflow-y: scroll;
-  margin-bottom: 2rem;
-}
 p {
   padding: 0 1.5rem;
   text-align: justify;
+}
+.scroller {
+  margin-top: 3rem;
 }
 </style>
