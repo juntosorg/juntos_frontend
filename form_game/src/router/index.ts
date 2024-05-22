@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import FormsView from '@/views/FormsView.vue'
 import LandingView from '@/views/LandingView.vue'
 // import PresenteComponent from '@/components/PresenteComponent.vue'
+import FinalChatIAComponent from '@/components/CFinal/FinalChatIAComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,11 @@ const router = createRouter({
       path: '/form',
       name: 'formsView',
       component: FormsView
+    },
+    {
+      path: '/presente',
+      name: 'Presente',
+      component: FinalChatIAComponent
     }
     // {
     //   path: '/presente',
