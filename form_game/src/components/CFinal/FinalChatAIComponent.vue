@@ -2,6 +2,7 @@
 import { RouterLink } from 'vue-router'
 import { ref, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const { userId } = defineProps<{
   userId: string
