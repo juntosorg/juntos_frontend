@@ -3,13 +3,20 @@ import { RouterLink } from 'vue-router'
 import { ref, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios';
 
+const { userId } = defineProps<{
+  userId: string
+}>()
+
+const menuOpen = ref(false)
+const loading = ref(false)
 const userMessage = ref('')
-const messages = ref([{ text: 'Olá, Eu sou a Ella. Conte-me como você está ?', sender: 'bot' }])
+const messages = ref([{ text: 'Olá, eu sou a Ella. Estou aqui para te auxiliar em temas relacionados à saúde mental. Sinta-se à vontade para conversar comigo!', sender: 'ai' }])
 
 const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev'
 
 const sendMessage = async () => {
   if (userMessage.value.trim() !== '') {
+    loading.value = true
     const userText = userMessage.value
     messages.value.push({ text: userMessage.value, sender: 'user' })
     userMessage.value = ''
@@ -18,12 +25,20 @@ const sendMessage = async () => {
     })
     try {
       const response = await axios.post(`${API}/chat/post`, { user_message: userText })
-      const botMessage = response.data.assistant_message
-      messages.value.push({ text: botMessage, sender: 'bot' })
+      const AIMessage = response.data.assistant_message
+      messages.value.push({ text: AIMessage, sender: 'ai' })
+
+      await axios.patch(`${API}/patch/add_chat_message/${String(userId)}?sender=user&message=${String(userText)}`)
+      .catch(error => console.error('Erro ao fazer add_chat_message: ', error))
+      
+      await axios.patch(`${API}/patch/add_chat_message/${String(userId)}?sender=ai&message=${String(AIMessage)}`)
+      .catch(error => console.error('Erro ao fazer add_chat_message: ', error))
+
     } catch (error) {
       console.error('Error sending message:', error)
-      messages.value.push({ text: 'Desculpe, houve um erro ao processar sua mensagem. Por favor, tente novamente.', sender: 'bot' })
+      messages.value.push({ text: 'Desculpe, houve um erro ao processar sua mensagem. Por favor, tente novamente.', sender: 'ai' })
     } finally {
+      loading.value = false
       nextTick(scrollToBottom)
     }
   }
@@ -49,49 +64,54 @@ watch(
   },
   { deep: true }
 )
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+}
 </script>
 
 <template>
   <div class="container">
     <div class="header p-4">
-      <div class="avatar">
-        <img src="../../assets/avatar-ella.png" alt="Avatar" class="header-avatar" />
-        <span class="ella"> Ella</span>
+      <div class="header-left">
+        <div class="avatar">
+          <img src="../../assets/avatar-ella.png" alt="Avatar" class="header-avatar" />
+          <span class="ella"> Ella</span>
+        </div>
       </div>
-      <div class="col-sm-4" style="width: auto">
+      <div class="header-center">
         <a href="https://juntos.art.br" target="blank" style="text-decoration: none">
-          <div class="row">
-            <div class="col-sm-2 my-auto text-center" style="width: auto">
-              <img
-                src="../../assets/Logo Juntos.png"
-                alt="Logo da JunTOs"
-                class="img-fluid img-logo"
-              />
-            </div>
-            <div class="col-sm-4 my-auto" style="width: auto">
-              <div class="row text-center">
-                <div class="col logo-text-title">JUNTOS</div>
-              </div>
-              <div class="row text-center">
-                <div class="col logo-text-sub">METAVERSOS</div>
-              </div>
-              <div class="row text-center">
-                <div class="col logo-text-sub">TERAPÊUTICOS</div>
-              </div>
+          <div class="logo-container">
+            <img src="../../assets/Logo Juntos.png" alt="Logo da JunTOs" class="img-logo" />
+            <div class="logo-text">
+              <div class="logo-text-title">JUNTOS</div>
+              <div class="logo-text-sub">METAVERSOS</div>
+              <div class="logo-text-sub">TERAPÊUTICOS</div>
             </div>
           </div>
         </a>
       </div>
-      <div class="header-actions">
+      <div class="header-right">
         <RouterLink to="/contato" class="contact-link">Podemos entrar em contato?</RouterLink>
         <a
           href="https://hospitaldonahelena.centraldemarcacao.com.br/"
           target="new"
           class="consult-button"
         >
-          Marcar uma consulta</a
-        >
+          Marcar uma consulta
+        </a>
+        <i class="bi bi-list hamburger-icon right-icon" @click="toggleMenu"></i>
       </div>
+    </div>
+    <div :class="['menu-links', { 'open': menuOpen }]">
+      <ul>
+        <li>
+          <RouterLink to="/contato" @click="toggleMenu" class="mobile-menu-item">Podemos entrar em contato?</RouterLink>
+        </li>
+        <li>
+          <a href="https://hospitaldonahelena.centraldemarcacao.com.br/" target="new" @click="toggleMenu" class="mobile-menu-item">Marcar uma consulta</a>
+        </li>
+      </ul>
     </div>
     <div class="chat-container">
       <div
@@ -109,8 +129,9 @@ watch(
         placeholder="Escreva uma mensagem"
         v-model="userMessage"
         @keypress="handleKeyPress"
+        :disabled="loading"
       />
-      <i class="bi bi-send-fill" @click="sendMessage"></i>
+      <i class="bi bi-send-fill" @click="sendMessage" :class="{ 'disabled': loading }"></i>
     </div>
   </div>
 </template>
@@ -120,11 +141,11 @@ watch(
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  padding-bottom: 5px;
 }
+
 .header {
   background-color: #0ea08a;
   display: flex;
@@ -135,41 +156,59 @@ watch(
   width: 100vw;
   box-sizing: border-box;
 }
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 20px;
+}
+
+.header-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 2;
+}
+
 .header-avatar {
   border-radius: 50%;
   width: 60px;
   height: auto;
 }
-.header-logo {
-  max-width: 150px;
-}
+
 .avatar {
   color: #000;
 }
+
 .header-actions {
   display: flex;
   align-items: center;
   gap: 16px;
 }
+
 .contact-link {
   color: #fff;
   text-decoration: none;
   font-size: 16px;
   cursor: pointer;
 }
+
 .contact-link:hover {
   text-decoration: underline;
 }
+
 .consult-button {
   background-color: #fff;
   color: #0ea08a;
   border: none;
   border-radius: 16px;
-  padding: 16px 24px 16px 24px;
+  padding: 16px 24px;
   font-size: 16px;
   cursor: pointer;
   text-decoration: none;
 }
+
 .consult-button:hover {
   transform: scale(1.1);
 }
@@ -177,7 +216,7 @@ watch(
 .chat-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
   max-width: 100vw;
   margin-top: 20px;
@@ -226,14 +265,23 @@ watch(
   color: #12927e;
   cursor: pointer;
 }
+
 .ella {
   font-weight: 500;
   font-size: 16pt;
 }
+
 .img-logo {
   height: 5rem;
   width: 5rem;
 }
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .logo-text-title {
   font-family: Roboto, sans-serif;
   letter-spacing: 3pt;
@@ -241,10 +289,74 @@ watch(
   color: white;
   font-size: 18pt;
 }
+
 .logo-text-sub {
   font-family: Roboto, sans-serif;
   letter-spacing: 3pt;
   color: white;
   font-size: 8pt;
+}
+
+.hamburger-icon {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+@media (max-width: 1198px) {
+  .hamburger-icon {
+    display: block;
+  }
+
+  .contact-link, .consult-button {
+    display: none;
+  }
+}
+
+.menu-links {
+  position: relative;
+  top: 0;
+  width: 100%;
+  background-color: #0ea08a;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  border-radius: 0.5rem;
+  text-align: center;
+  z-index: 1000;
+}
+
+.menu-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.mobile-menu-item {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mobile-menu-item:hover {
+  background-color: white;
+  color: #0ea08a;
+  border-radius: 0.5rem;
+}
+
+.menu-links.open {
+  max-height: 10rem;
+}
+
+.right-icon {
+  margin-left: auto;
 }
 </style>

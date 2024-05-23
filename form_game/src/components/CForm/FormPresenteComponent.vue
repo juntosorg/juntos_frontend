@@ -76,7 +76,7 @@ function convertNewlinesToBreaks(text: string) {
       </div>
     </div>
     <div class="row" id="text-box">
-      <p v-html="convertNewlinesToBreaks(content)" class="content-style"></p>
+      <p v-html="convertNewlinesToBreaks(content || '')" class="content-style"></p>
       <div class="mt-5">
         <div class="col-12 text-center mobile-comecar" @click="closePopup">PRÓXIMA QUESTÃO</div>
       </div>

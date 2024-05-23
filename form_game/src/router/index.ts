@@ -3,8 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import FormsView from '@/views/FormsView.vue'
 import LandingView from '@/views/LandingView.vue'
 // import PresenteComponent from '@/components/PresenteComponent.vue'
-import FinalChatIAComponent from '@/components/CFinal/FinalChatAIComponent.vue'
+import ChatView from '@/views/ChatView.vue'
 import FinalContactComponent from '@/components/CFinal/FinalContactComponent.vue'
+import { isValidUserId } from '@/services'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,9 +21,17 @@ const router = createRouter({
       component: FormsView
     },
     {
-      path: '/presente',
-      name: 'Presente',
-      component: FinalChatIAComponent
+      path: '/chat',
+      name: 'Chat',
+      component: ChatView,
+      beforeEnter: async (to, from, next) => {
+        const userId = to.query.userId as string
+        if (userId && await isValidUserId(userId)) {
+          next()
+        } else {
+          next({ name: 'LandingView' }) // Redireciona para a página inicial se o userId não for válido
+        }
+      }
     },
     {
       path: '/contato',

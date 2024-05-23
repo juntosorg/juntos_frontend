@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import confetti from 'canvas-confetti'
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router';
 
-const emits = defineEmits(['switch'])
+const { userId } = defineProps<{
+  userId: string
+}>()
+
+const router = useRouter()
 
 const handleButtonClick = () => {
-  emits('switch')
+  router.push({ name: 'Chat', query: { userId } })
 }
 
 const launchConfetti = () => {
