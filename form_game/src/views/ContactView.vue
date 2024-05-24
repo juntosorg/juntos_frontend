@@ -4,6 +4,21 @@ import { ref } from 'vue'
 const nome = ref('')
 const telefone = ref('')
 const email = ref('')
+
+function sendContact() {
+  if (nome.value.length === 0) {
+    alert('Nome não pode ser vazio!')
+  } else if (!new RegExp('\\(\\d{2}\\) \\d{4,5}-\\d{4}').test(telefone.value)) {
+    alert('Telefone inválido!')
+  } else if (!new RegExp('[\\w.-]+@[\\w-]+(\\.[a-z]+)+').test(email.value)) {
+    alert('Email inválido!')
+  } else {
+    nome.value = ''
+    telefone.value = ''
+    email.value = ''
+    alert('Contato enviado com sucesso!\nEm breve, entraremos em contato com você!')
+  }
+}
 </script>
 
 <template>
@@ -92,7 +107,7 @@ const email = ref('')
               </label>
             </div>
             <div class="row mt-4 mb-3">
-              <div class="enviar">Enviar</div>
+              <div class="enviar" @click="sendContact">Enviar</div>
             </div>
           </div>
         </div>
