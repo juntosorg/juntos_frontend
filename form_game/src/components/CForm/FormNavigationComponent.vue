@@ -21,7 +21,7 @@ const presentTitle = ref('')
 const presentContent = ref('')
 
 const handleAward = (type: string) => {
-  const awards = premios.filter(award => award.tipo === type)
+  const awards = premios.filter((award) => award.tipo === type)
   const randomAward = awards[Math.floor(Math.random() * awards.length)]
   presentTitle.value = randomAward.titulo
   presentContent.value = randomAward.conteudo
@@ -35,7 +35,6 @@ const handleClosePresente = async () => {
   await startQuestion()
 }
 
-
 const { userId } = defineProps<{
   userId: string
 }>()
@@ -48,12 +47,12 @@ const updateCurrForm = async () => {
     await endQuestion()
     currForm.value++
   } else {
-    const answeredCount = selectedAnswers.value.filter(answer => answer !== -1).length
+    const answeredCount = selectedAnswers.value.filter((answer) => answer !== -1).length
     const awardIndex = Math.floor(answeredCount / 5)
     if (answeredCount > 0 && answeredCount % 5 === 0 && !awardsShown.value[awardIndex]) {
       await endQuestion()
-      showAwardPopup.value = true;
-      awardsShown.value[awardIndex] = true;
+      showAwardPopup.value = true
+      awardsShown.value[awardIndex] = true
     } else {
       await endQuestion()
       currForm.value++
@@ -61,7 +60,7 @@ const updateCurrForm = async () => {
       showAwardPopup.value = false
     }
   }
-};
+}
 
 const decrementCurrForm = () => {
   if (currForm.value > 0) currForm.value--
@@ -76,30 +75,30 @@ const closeAwardPopup = async () => {
 }
 
 const startQuestion = async () => {
-  await axios.patch(`${API}/patch/start/${String(userId)}?question_number=${Number(currForm.value)}`)
-    // .then(response => console.log('start_question feita com sucesso'))
-    .catch(error => console.error('Erro ao fazer start_question: ', error))
-};
+  // await axios.patch(`${API}/patch/start/${String(userId)}?question_number=${Number(currForm.value)}`)
+  // .then(response => console.log('start_question feita com sucesso'))
+  // .catch(error => console.error('Erro ao fazer start_question: ', error))
+}
 
 const endQuestion = async () => {
   const questionNumber = currForm.value
   const answer = selectedAnswers.value[questionNumber]
-  await axios.patch(`${API}/patch/end/${String(userId)}?question_number=${Number(questionNumber)}&answer=${Number(answer)}`)
-    // .then(response => console.log('end_question feita com sucesso'))
-    .catch(error => console.error('Erro ao fazer end_question: ', error))
-};
+  // await axios.patch(`${API}/patch/end/${String(userId)}?question_number=${Number(questionNumber)}&answer=${Number(answer)}`)
+  // .then(response => console.log('end_question feita com sucesso'))
+  // .catch(error => console.error('Erro ao fazer end_question: ', error))
+}
 
 onMounted(async () => {
   if (currForm.value === 0) {
     await startQuestion()
   }
-});
+})
 </script>
 
 <template>
   <div class="container-fluid">
     <div v-if="!isComplete">
-      <FormHeaderComponent @goBackQuestion="decrementCurrForm"/>
+      <FormHeaderComponent @goBackQuestion="decrementCurrForm" />
       <FormComponent
         :question="formData[currForm].question"
         :answers="formData[currForm].answers"
@@ -107,33 +106,34 @@ onMounted(async () => {
         :userId="userId"
         :questionNumber="Number(currForm)"
         @next-question="updateCurrForm"
-        @answerSelected="answer => selectedAnswers[currForm] = answer"
+        @answerSelected="(answer) => (selectedAnswers[currForm] = answer)"
       />
-      <FormProgressBarComponent :totalItems="totalItems" :answeredItems="currForm" style="padding-bottom: 5%;" />
+      <FormProgressBarComponent
+        :totalItems="totalItems"
+        :answeredItems="currForm"
+        style="padding-bottom: 5%"
+      />
       <FormAwardComponent v-if="showAwardPopup" @award="handleAward" @close="closeAwardPopup" />
       <PresenteComponent
-      v-if="showPresente"
-      :title="presentTitle"
-      :content="presentContent"
-      @close="handleClosePresente"
+        v-if="showPresente"
+        :title="presentTitle"
+        :content="presentContent"
+        @close="handleClosePresente"
       />
     </div>
     <div v-else>
-      <FinalFormComponent
-      :userId="userId"
-       />
+      <FinalFormComponent :userId="userId" />
     </div>
   </div>
 </template>
 
 <style scoped>
 .container-fluid {
-  min-height: 100vh; 
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
-
 
 @media (max-width: 768px) {
   .container-fluid {

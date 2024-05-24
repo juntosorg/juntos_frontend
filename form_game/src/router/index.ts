@@ -23,15 +23,15 @@ const router = createRouter({
     {
       path: '/chat',
       name: 'Chat',
-      component: ChatView,
-      beforeEnter: async (to, from, next) => {
-        const userId = to.query.userId as string
-        if (userId && (await isValidUserId(userId))) {
-          next()
-        } else {
-          next({ name: 'LandingView' }) // Redireciona para a página inicial se o userId não for válido
-        }
-      }
+      component: ChatView
+      // beforeEnter: async (to, from, next) => {
+      //   const userId = to.query.userId as string
+      //   if (userId && (await isValidUserId(userId))) {
+      //     next()
+      //   } else {
+      //     next({ name: 'LandingView' }) // Redireciona para a página inicial se o userId não for válido
+      //   }
+      // }
     },
     {
       path: '/contato',

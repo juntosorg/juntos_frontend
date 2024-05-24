@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { ref, onMounted, watch, nextTick } from 'vue'
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
 
 const { userId } = defineProps<{
   userId: string
@@ -11,7 +11,12 @@ const { userId } = defineProps<{
 const menuOpen = ref(false)
 const loading = ref(false)
 const userMessage = ref('')
-const messages = ref([{ text: 'Olá, eu sou a Ella. Estou aqui para te auxiliar em temas relacionados à saúde mental. Sinta-se à vontade para conversar comigo!', sender: 'ai' }])
+const messages = ref([
+  {
+    text: 'Olá, eu sou a Ella. Estou aqui para te auxiliar em temas relacionados à saúde mental. Sinta-se à vontade para conversar comigo!',
+    sender: 'ai'
+  }
+])
 
 const API = 'https://5efa99a1-9b03-462b-8a83-5e04136e01fb-00-j7n4fy74wrpw.spock.replit.dev'
 
@@ -29,15 +34,17 @@ const sendMessage = async () => {
       const AIMessage = response.data.assistant_message
       messages.value.push({ text: AIMessage, sender: 'ai' })
 
-      await axios.patch(`${API}/patch/add_chat_message/${String(userId)}?sender=user&message=${String(userText)}`)
-      .catch(error => console.error('Erro ao fazer add_chat_message: ', error))
-      
-      await axios.patch(`${API}/patch/add_chat_message/${String(userId)}?sender=ai&message=${String(AIMessage)}`)
-      .catch(error => console.error('Erro ao fazer add_chat_message: ', error))
+      // await axios.patch(`${API}/patch/add_chat_message/${String(userId)}?sender=user&message=${String(userText)}`)
+      // .catch(error => console.error('Erro ao fazer add_chat_message: ', error))
 
+      // await axios.patch(`${API}/patch/add_chat_message/${String(userId)}?sender=ai&message=${String(AIMessage)}`)
+      // .catch(error => console.error('Erro ao fazer add_chat_message: ', error))
     } catch (error) {
       console.error('Error sending message:', error)
-      messages.value.push({ text: 'Desculpe, houve um erro ao processar sua mensagem. Por favor, tente novamente.', sender: 'ai' })
+      messages.value.push({
+        text: 'Desculpe, houve um erro ao processar sua mensagem. Por favor, tente novamente.',
+        sender: 'ai'
+      })
     } finally {
       loading.value = false
       nextTick(scrollToBottom)
@@ -104,13 +111,21 @@ const toggleMenu = () => {
         <i class="bi bi-list hamburger-icon right-icon" @click="toggleMenu"></i>
       </div>
     </div>
-    <div :class="['menu-links', { 'open': menuOpen }]">
+    <div :class="['menu-links', { open: menuOpen }]">
       <ul>
         <li>
-          <RouterLink to="/contato" @click="toggleMenu" class="mobile-menu-item">Podemos entrar em contato?</RouterLink>
+          <RouterLink to="/contato" @click="toggleMenu" class="mobile-menu-item"
+            >Podemos entrar em contato?</RouterLink
+          >
         </li>
         <li>
-          <a href="https://hospitaldonahelena.centraldemarcacao.com.br/" target="new" @click="toggleMenu" class="mobile-menu-item">Marcar uma consulta</a>
+          <a
+            href="https://hospitaldonahelena.centraldemarcacao.com.br/"
+            target="new"
+            @click="toggleMenu"
+            class="mobile-menu-item"
+            >Marcar uma consulta</a
+          >
         </li>
       </ul>
     </div>
@@ -132,7 +147,7 @@ const toggleMenu = () => {
         @keypress="handleKeyPress"
         :disabled="loading"
       />
-      <i class="bi bi-send-fill" @click="sendMessage" :class="{ 'disabled': loading }"></i>
+      <i class="bi bi-send-fill" @click="sendMessage" :class="{ disabled: loading }"></i>
     </div>
   </div>
 </template>
@@ -158,7 +173,8 @@ const toggleMenu = () => {
   box-sizing: border-box;
 }
 
-.header-left, .header-right {
+.header-left,
+.header-right {
   display: flex;
   align-items: center;
   flex: 1;
@@ -310,7 +326,8 @@ const toggleMenu = () => {
     display: block;
   }
 
-  .contact-link, .consult-button {
+  .contact-link,
+  .consult-button {
     display: none;
   }
 }

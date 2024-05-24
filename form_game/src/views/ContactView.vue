@@ -4,6 +4,21 @@ import { ref } from 'vue'
 const nome = ref('')
 const telefone = ref('')
 const email = ref('')
+
+function sendContact() {
+  if (nome.value.length === 0) {
+    alert('Nome não pode ser vazio!')
+  } else if (!new RegExp('\\(\\d{2}\\) \\d{4,5}-\\d{4}').test(telefone.value)) {
+    alert('Telefone inválido!')
+  } else if (!new RegExp('[\\w.-]+@[\\w-]+(\\.[a-z]+)+').test(email.value)) {
+    alert('Email inválido!')
+  } else {
+    nome.value = ''
+    telefone.value = ''
+    email.value = ''
+    alert('Contato enviado com sucesso!\nEm breve, entraremos em contato com você!')
+  }
+}
 </script>
 
 <template>
@@ -58,9 +73,9 @@ const email = ref('')
                 <input
                   v-model="nome"
                   type="text"
-                  maxlength="15"
+                  maxlength="50"
                   name="nome"
-                  placeholder="Ex: John Doe"
+                  placeholder="Ex.: Maria Silva"
                   class="input"
                 />
               </label>
@@ -73,7 +88,7 @@ const email = ref('')
                   type="tel"
                   maxlength="20"
                   name="telefone"
-                  placeholder="(97) 2840-7733"
+                  placeholder="Ex.: (61) 99942-8407"
                   class="input"
                 />
               </label>
@@ -86,13 +101,13 @@ const email = ref('')
                   type="email"
                   maxlength="120"
                   name="email"
-                  placeholder="Ex: johndoe@gmail.com"
+                  placeholder="Ex.: maria.silva@gmail.com"
                   class="input"
                 />
               </label>
             </div>
             <div class="row mt-4 mb-3">
-              <div class="enviar">Enviar</div>
+              <div class="enviar" @click="sendContact">Enviar</div>
             </div>
           </div>
         </div>
@@ -116,7 +131,7 @@ const email = ref('')
 }
 .main-box {
   width: 60%;
-  box-shadow: 0px 1px 4px 0px #00000040;
+  box-shadow: 2px 5px 4px 3px #00000040;
   margin: 1rem;
   padding: 1rem;
   border-radius: 1rem;

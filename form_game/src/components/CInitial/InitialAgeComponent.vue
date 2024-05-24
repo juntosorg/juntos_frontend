@@ -10,25 +10,25 @@ const emit = defineEmits(['continue'])
 
 onMounted(() => {
   const userData = {}
-  axios
-    .post(`${API}/post/user`, userData)
-    .then((response) => {
-      userId.value = response.data._id
-    })
-    .catch((error) => {
-      console.error('Erro ao criar usuário: ', error)
-    })
+  // axios
+  //   .post(`${API}/post/user`, userData)
+  //   .then((response) => {
+  //     userId.value = response.data._id
+  //   })
+  //   .catch((error) => {
+  //     console.error('Erro ao criar usuário: ', error)
+  //   })
 })
 
 function continueToNext() {
-  axios
-    .patch(`${API}/patch/${userId.value}`, { age: age.value })
-    .then(() => {
-      emit('continue', userId.value)
-    })
-    .catch((error) => {
-      console.error('Erro ao atualizar idade: ', error)
-    })
+  // axios
+  //   .patch(`${API}/patch/${userId.value}`, { age: age.value })
+  //   .then(() => {
+  emit('continue', userId.value)
+  //   })
+  //   .catch((error) => {
+  //     console.error('Erro ao atualizar idade: ', error)
+  //   })
 }
 </script>
 
